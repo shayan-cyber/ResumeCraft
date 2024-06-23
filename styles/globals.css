@@ -3,5 +3,24 @@
 @tailwind utilities;
 
 .input-form{
-  @apply p-2 border-2 rounded-md w-full 
+  @apply p-2 border-2 rounded-xl w-full bg-gray-100 focus:outline-none focus:bg-blue-50
+}
+
+.bg-purple-primary{
+  @apply bg-purple-600
+}
+
+.bg-purple-secondary{
+  @apply bg-purple-400
+}
+@layer utilities {
+  .pause {
+    animation-play-state:paused;
+  }
+}
+.fill{
+  width: -moz-available;          /* WebKit-based browsers will ignore this. */
+  width: -webkit-fill-available;  /* Mozilla-based browsers will ignore this. */
+  width: fill-available;
+
 }

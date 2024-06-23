@@ -52,7 +52,7 @@ function BasicInfo({basicDetails, setBasicDetails}) {
 
                 <div>
                     <label htmlFor='phone' className="block">Phone</label>
-                    <input className=' input-form' id="phone" type='number' name='phone' value={basicDetails?.phone} onChange={(e)=>setBasicDetails({
+                    <input className=' input-form' id="phone" type='text' name='phone' value={basicDetails?.phone} onChange={(e)=>setBasicDetails({
                         ...basicDetails,
                         phone:e.target.value
                     })} placeholder='+91 1234567890' />
