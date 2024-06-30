@@ -8,6 +8,11 @@ import OtherInfo from './FormSections/OtherInfo';
 import { FaPercentage } from "react-icons/fa";
 import Modal from '../Modal';
 import axios from 'axios';
+import LatexEditor from './FormSections/LatexEditor';
+import { TABS } from '@/constants';
+import LatexResumeShowCase from './LatexResumeShowCase';
+import AIDock from './AIDock';
+import Skills from './FormSections/Skills';
 function BuilderForm({ tab }) {
 
   const [basicDetails, setBasicDetails] = useState({
@@ -22,16 +27,27 @@ function BuilderForm({ tab }) {
   const [WorkDetails, setWorkDetails] = useState([])
   const [educationDetails, setEducationDetails] = useState([])
   const [projectDetails, setProjectDetails] = useState([])
+  const [skillsDetails, setSkillsDetails] = useState([])
   const [otherDetails, setOtherDetails] = useState([])
   const [openModal, setOpenModal] = useState(false);
   const [loading, setLoading] = useState(false)
   const [jobDescription, setJobDescription] = useState("")
+  const [atsScore, setAtsScore] = useState({})
+  const [latexCode, setLatexCode] = useState(null)
+  const [suggestions, setSuggestions] = useState({
+    experience:"",
+    project:"",
+    skills:"",
+  })
+
   const form_sections = {
     BASIC_INFO: <BasicInfo basicDetails={basicDetails} setBasicDetails={setBasicDetails} />,
     WORK_EXPERIENCE: <WorkExperienceInfo WorkDetails={WorkDetails} setWorkDetails={setWorkDetails} />,
     EDUCATION: <EducationInfo educationDetails={educationDetails} setEducationDetails={setEducationDetails} />,
     PROJECTS: <ProjectsInfo projectDetails={projectDetails} setProjectDetails={setProjectDetails} />,
-    OTHER: <OtherInfo otherDetails={otherDetails} setOtherDetails={setOtherDetails} />
+    OTHER: <OtherInfo otherDetails={otherDetails} setOtherDetails={setOtherDetails} />,
+    SKILLS: <Skills skillsDetails={skillsDetails} setSkillsDetails={setSkillsDetails} />,
+    LATEX: <LatexEditor latexCode={latexCode} setLatexCode={setLatexCode} />
   }
   console.log(projectDetails);
 
@@ -41,7 +57,7 @@ function BuilderForm({ tab }) {
       Work Experience : ${JSON.stringify(WorkDetails)},
       Education: ${JSON.stringify(educationDetails)},
       Project Details: ${JSON.stringify(projectDetails)}
-    
+      skills: ${JSON.stringify(skillsDetails)}
     `
     return description
   }
@@ -53,27 +69,56 @@ function BuilderForm({ tab }) {
     setLoading(true)
 
     axios.post("/api/gemini/ats", {
-      resumeDescription:buildResumeDescription(),
+      resumeDescription: buildResumeDescription(),
       jobDescription: jobDescription
     }).then((res) => {
       // console.log({ res });
       console.log(JSON.parse(res?.data?.text))
+      setAtsScore(JSON.parse(res?.data?.text))
       setLoading(false)
       setOpenModal(false)
-      
+
     })
-    
-    .catch((e) => {
-      console.log(e);
-      setLoading(false)
-    })
+
+      .catch((e) => {
+        console.log(e);
+        setLoading(false)
+      })
   }
 
 
+  const genSuggestions = () => {
+    if (loading)
+      return
 
+
+    setLoading(true)
+
+    axios.post("/api/gemini/suggestions", {
+      resumeDescription: buildResumeDescription(),
+      title: basicDetails?.title
+    }).then((res) => {
+      console.log({res});
+      console.log((res?.data?.text))
+      // setAtsScore(JSON.parse(res?.data?.text))
+      setSuggestions({
+        experience:res?.data?.text?.experience ? res?.data?.text?.experience : "",
+        project :res?.data?.text?.project ? res?.data?.text?.project : "",
+        skills : res?.data?.text?.skills ? res?.data?.text?.skills : "",
+      })
+      setLoading(false)
+      // setOpenModal(false)
+    })
+      .catch((e) => {
+        console.log(e);
+        setLoading(false)
+      })
+  }
+
+  console.log({suggestions});
   const ModalChildren = () => {
     return (
-      <div className='rounded-md p-8 w-[50%] bg-white'>
+      <div className='rounded-md p-8 w-[50%] bg-white' onClick={(e) => e.stopPropagation()}>
 
         <div className='block'>
           <label htmlFor='job-description'>Job Description</label>
@@ -81,7 +126,10 @@ function BuilderForm({ tab }) {
         </div>
         <div className=''>
 
-          <button className='p-2 rounded-md bg-purple-primary text-white mt-4' onClick={() => calculateScore()}>
+          <button className='p-2 rounded-md bg-purple-primary text-white mt-4' onClick={(e) => {
+            e.stopPropagation()
+            calculateScore()
+          }}>
             Calculate Score
           </button>
 
@@ -94,13 +142,16 @@ function BuilderForm({ tab }) {
   return (
     <div className='relative'>
 
-      {openModal && (<Modal children={<ModalChildren />} />)}
+      {openModal && (<Modal children={<ModalChildren />} onClick={() => {
+
+        setOpenModal(false)
+      }} />)}
 
       <div className='grid grid-cols-2 gap-0'>
         <div>
-          <div className='flex justify-center items-start px-4 py-6 border-r-2  h-screen'>
+          <div className='flex justify-center items-start px-4 py-6 border-r-2  h-screen overflow-y-auto'>
 
-            <div className='w-full border-2 p-6 rounded-xl'>
+            <div className={tab === TABS.LATEX ? 'w-full border-2 p-6 rounded-xl h-full' : 'w-full border-2 p-6 rounded-xl '}>
               {form_sections[tab]}
             </div>
 
@@ -108,18 +159,25 @@ function BuilderForm({ tab }) {
         </div>
 
         <div className='px-4 py-4 max-h-screen overflow-y-auto'>
+          {atsScore && (
+            <div className='flex justify-center '>
 
-          <div className='flex justify-end items-center'>
+              <h1>{atsScore?.resume_score}</h1>
 
-            <h1 className='text-md '>Calculate Score</h1>
-            <button className='p-2 rounded-full text-white bg-purple-primary my-2 border-2 border-purple-800 ml-2' onClick={() => {
-              setOpenModal(true)
-            }} ><FaPercentage /></button>
+            </div>
+          )}
+
+
+          <div className='absolute bottom-5 right-8 z-20'>
+
+            <AIDock setATSModalOpen={setOpenModal} genSuggestions={genSuggestions} />
 
           </div>
 
           <div className='flex justify-center '>
-            <ResumeShowCase template_name={"default"} basicDetails={basicDetails} WorkDetails={WorkDetails} educationDetails={educationDetails} projectDetails={projectDetails} />
+            {
+              latexCode !== null ? <LatexResumeShowCase latexCode={latexCode} /> : <ResumeShowCase template_name={"default"} basicDetails={basicDetails} WorkDetails={WorkDetails} educationDetails={educationDetails} projectDetails={projectDetails} skillsDetails={skillsDetails} suggestions={suggestions} />
+            }
           </div>
         </div>
 

@@ -1,10 +1,9 @@
 import React from 'react'
 import Default from '../ResumeTemplates/Default'
 
-function ResumeShowCase({template_name, basicDetails,WorkDetails,educationDetails, projectDetails }) {
+function ResumeShowCase({template_name, basicDetails,WorkDetails,educationDetails, projectDetails, skillsDetails, suggestions }) {
     let switcher ={
-        default:<Default basicDetails={basicDetails} WorkDetails={WorkDetails} educationDetails={educationDetails} projectDetails={projectDetails}/>,
-
+        default:<Default basicDetails={basicDetails} WorkDetails={WorkDetails} educationDetails={educationDetails} projectDetails={projectDetails} skillsDetails={skillsDetails} suggestions={suggestions}/>,
     }
   return (
     <div className='w-full '>

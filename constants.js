@@ -4,7 +4,9 @@ export const TABS = {
     PROJECTS: "PROJECTS",
     EDUCATION: "EDUCATION",
     ACHIEVEMENTS: "ACHIEVEMENTS",
-    OTHER: "OTHER"
+    SKILLS:'SKILLS',
+    OTHER: "OTHER",
+    LATEX:"LATEX",
 }
 
 export const sampleData = {
@@ -53,6 +55,9 @@ export const sampleData = {
             end_date: "2001/02/05",
             result: "8 CGPA"
         }
+    ],
+    skillsDetails:[
+        {text:"django"}, {text:"python"}, {text:"c++"}
     ],
     projectDetails: [
 

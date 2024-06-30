@@ -3,9 +3,11 @@ import { SiGooglegemini } from "react-icons/si";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import axios from 'axios';
 import Spils from '../Spils';
+import { LuBrain } from "react-icons/lu";
+import AIResponseCard from '../AIResponseCard';
 function ProjectsInfo({ projectDetails, setProjectDetails }) {
     const [loading, setLoading] = useState(false)
-    const [geminiText, setGeminiText] = useState("")
+    const [geminiResponses, setGeminiResponses] = useState("")
     const [singleProjectDetails, setSingleProjectDetails] = useState({
         name: "",
         description: "",
@@ -26,12 +28,8 @@ function ProjectsInfo({ projectDetails, setProjectDetails }) {
             }).then((res) => {
                 console.log({ res });
                 setLoading(false)
-                setGeminiText(res?.data?.text)
-                console.log({ res });
-                setSingleProjectDetails({
-                    ...singleProjectDetails,
-                    description: res?.data?.text
-                })
+                setGeminiResponses(res?.data?.text)
+
 
             }).catch((e) => {
                 console.log(e)
@@ -46,6 +44,12 @@ function ProjectsInfo({ projectDetails, setProjectDetails }) {
         let filtered = projectDetails.filter((item) => item?.id !== id)
         setProjectDetails([...filtered])
     }
+    const setSelectResponse = (description) => {
+        setSingleProjectDetails({
+            ...singleProjectDetails,
+            description: description
+        })
+    }
     return (
         <div className='w-full'>
             <div className='flex flex-wrap justify-start items-center gap-2 mb-5'>
@@ -58,48 +62,77 @@ function ProjectsInfo({ projectDetails, setProjectDetails }) {
                 })}
             </div>
 
-            <div className='mb-2'>
-                <label htmlFor='name' className="block">Project Name</label>
-                <input className=' input-form ' id="name" name='name' placeholder='Ecommerce' value={singleProjectDetails?.name} onChange={(e) => setSingleProjectDetails({
-                    ...singleProjectDetails,
-                    name: e.target.value
-                })} />
+            <div className='mb-2 grid grid-cols-2 gap-2'>
+
+                <div>
+                    <label htmlFor='name' className="block">Project Name</label>
+                    <input className=' input-form ' id="name" name='name' placeholder='Ecommerce' value={singleProjectDetails?.name} onChange={(e) => setSingleProjectDetails({
+                        ...singleProjectDetails,
+                        name: e.target.value
+                    })} />
+                </div>
+                <div>
+                    <label htmlFor='tech_stack' className="block">Tech Stack</label>
+                    <input className=' input-form ' id="tech_stack" name='tech_stack' placeholder='ExpressJS, ReactJS' value={singleProjectDetails?.tech_stack} onChange={(e) => setSingleProjectDetails({
+                        ...singleProjectDetails,
+                        tech_stack: e.target.value
+                    })} />
+                </div>
+
             </div>
 
-            <div className='mb-2'>
-                <label htmlFor='tech_stack' className="block">Tech Stack</label>
-                <input className=' input-form ' id="tech_stack" name='tech_stack' placeholder='ExpressJS, ReactJS' value={singleProjectDetails?.tech_stack} onChange={(e) => setSingleProjectDetails({
-                    ...singleProjectDetails,
-                    tech_stack: e.target.value
-                })} />
-            </div>
-            <div className='mb-2'>
-                <label htmlFor='link' className="block">Link</label>
-                <input className=' input-form ' id="link" name='link' placeholder='https://' value={singleProjectDetails?.link} onChange={(e) => setSingleProjectDetails({
-                    ...singleProjectDetails,
-                    link: e.target.value
-                })} />
-            </div>
-            <div className='mb-2'>
-                <label htmlFor='start_date' className="block">Start Date</label>
-                <input className=' input-form ' id="start_date" name='start_date' type='date' placeholder='20/01/2020' value={singleProjectDetails?.start_date} onChange={(e) => setSingleProjectDetails({
-                    ...singleProjectDetails,
-                    start_date: e.target.value
-                })} />
-            </div>
-            <div className='mb-2'>
-                <label htmlFor='end_date' className="block">End Date</label>
-                <input className=' input-form ' id="end_date" name='end_date' type='date' placeholder='20/01/2020' value={singleProjectDetails?.end_date} onChange={(e) => setSingleProjectDetails({
-                    ...singleProjectDetails,
-                    end_date: e.target.value
-                })} />
+
+            <div className='mb-2 grid grid-cols-4 gap-2'>
+                <div className='col-span-2'>
+                    <label htmlFor='link' className="block">Link</label>
+                    <input className=' input-form ' id="link" name='link' placeholder='https://' value={singleProjectDetails?.link} onChange={(e) => setSingleProjectDetails({
+                        ...singleProjectDetails,
+                        link: e.target.value
+                    })} />
+
+                </div>
+                <div>
+                    <label htmlFor='start_date' className="block">Start Date</label>
+                    <input className=' input-form ' id="start_date" name='start_date' type='date' placeholder='20/01/2020' value={singleProjectDetails?.start_date} onChange={(e) => setSingleProjectDetails({
+                        ...singleProjectDetails,
+                        start_date: e.target.value
+                    })} />
+                </div>
+                <div>
+                    <label htmlFor='end_date' className="block">End Date</label>
+                    <input className=' input-form ' id="end_date" name='end_date' type='date' placeholder='20/01/2020' value={singleProjectDetails?.end_date} onChange={(e) => setSingleProjectDetails({
+                        ...singleProjectDetails,
+                        end_date: e.target.value
+                    })} />
+                </div>
+
             </div>
 
-            <div className='mb-2 relative'>
-                <button disabled={loading} className='text-white p-1 rounded-full bg-purple-secondary absolute right-4 top-10 border-2 border-purple-600  animate-pulse disabled:animate-spin disabled:bg-purple-500 hover:bg-purple-600 hover:pause hover:opacity-100' onClick={() => handleGemini()}>{
-                    !loading ? <SiGooglegemini /> : <AiOutlineLoading3Quarters />
-                }</button>
-                <label htmlFor='description' className="block">Description</label>
+
+            <div className='mb-2 relative mt-4'>
+                <div className='flex justify-between items-end mb-2'>
+                    <label htmlFor='description' className="block">Description</label>
+
+                    {singleProjectDetails?.description !== "" && (
+
+                        <button disabled={loading} className='text-purple-600 py-[1px] px-8 rounded-full border-2 border-purple-500  hover:bg-purple-500 hover:text-white disabled:opacity-100 disabled:cursor-wait disabled:hover:bg-white disabled:hover:text-purple-500   hover:opacity-100 bg-white flex  items-center' onClick={() => handleGemini()}>
+
+
+                            <span className='mb-[2px]'> Use AI </span> {
+                                !loading ? <LuBrain className='ml-1 ' /> : <AiOutlineLoading3Quarters className='ml-1 animate-spin' />
+                            }
+                        </button>
+                    )}
+
+                </div>
+                {geminiResponses && (
+                    <div className='grid grid-cols-1 gap-2 mb-2 mt-2'>
+
+                        {geminiResponses?.map((item, key) => <AIResponseCard key={key} description={item} setSelectResponse={setSelectResponse} />)}
+
+                    </div>
+                )}
+
                 <textarea rows={8} className=' input-form ' id="description" name='description' placeholder='20/01/2020' value={singleProjectDetails?.description} onChange={(e) => setSingleProjectDetails({
                     ...singleProjectDetails,
                     description: e.target.value
@@ -122,6 +155,7 @@ function ProjectsInfo({ projectDetails, setProjectDetails }) {
                         end_date: "",
                         link: ""
                     })
+                    setGeminiResponses([])
                 }}>
                     Add
                 </button>
