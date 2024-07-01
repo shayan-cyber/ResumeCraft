@@ -1,7 +1,15 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@509&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
+body{
+  font-family: "Space Grotesk", sans-serif;
+}
+.bg-warm-grey{
+  background-color: #f5f5f4;
+  
+}
 .input-form{
   @apply p-2 border-2 rounded-xl w-full bg-gray-100 focus:outline-none focus:bg-blue-50
 }
@@ -146,3 +154,4 @@
 #tags input:before {
   border: none;
 }
+

@@ -10,6 +10,9 @@
   },
   "dependencies": {
     "@google/generative-ai": "^0.13.0",
+    "@tiptap/pm": "^2.4.0",
+    "@tiptap/react": "^2.4.0",
+    "@tiptap/starter-kit": "^2.4.0",
     "axios": "^1.7.2",
     "latex.js": "^0.12.6",
     "next": "14.2.4",
@@ -21,7 +24,8 @@
     "react-latex-next": "^3.0.0",
     "react-simple-code-editor": "^0.13.1",
     "react-tag-input": "^6.10.2",
-    "svgdom": "^0.1.19"
+    "svgdom": "^0.1.19",
+    "typewriter-effect": "^2.21.0"
   },
   "devDependencies": {
     "eslint": "^8",
