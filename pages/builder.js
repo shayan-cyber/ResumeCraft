@@ -3,7 +3,7 @@ import React from 'react'
 
 function builder() {
   return (
-    <div>
+    <div className='bg-warm-grey'>
         <BuilderPage/>
     </div>
   )

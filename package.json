@@ -24,6 +24,8 @@
     "react-latex-next": "^3.0.0",
     "react-simple-code-editor": "^0.13.1",
     "react-tag-input": "^6.10.2",
+    "react-to-print": "^2.15.1",
+    "sonner": "^1.5.0",
     "svgdom": "^0.1.19",
     "typewriter-effect": "^2.21.0"
   },

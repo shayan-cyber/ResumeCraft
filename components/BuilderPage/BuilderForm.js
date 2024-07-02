@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState , useRef} from 'react'
 import BasicInfo from './FormSections/BasicInfo'
 import ResumeShowCase from './ResumeShowCase';
 import WorkExperienceInfo from './FormSections/WorkExperienceInfo';
@@ -13,8 +13,13 @@ import { TABS } from '@/constants';
 import LatexResumeShowCase from './LatexResumeShowCase';
 import AIDock from './AIDock';
 import Skills from './FormSections/Skills';
+import { MdOutlineFileDownload } from "react-icons/md";
+import { useReactToPrint } from 'react-to-print'
 function BuilderForm({ tab }) {
-
+  const componentRef = useRef();
+  const handlePrint = useReactToPrint({
+    content: () => componentRef.current,
+  });
   const [basicDetails, setBasicDetails] = useState({
     name: "John Doe",
     title: "Frontend Developer",
@@ -151,7 +156,7 @@ function BuilderForm({ tab }) {
         <div>
           <div className='flex justify-center items-start px-4 py-6 border-r-2  h-screen overflow-y-auto'>
 
-            <div className={tab === TABS.LATEX ? 'w-full border-2 p-6 rounded-xl h-full' : 'w-full border-2 p-6 rounded-xl '}>
+            <div className={tab === TABS.LATEX ? 'w-full shadow-md p-6 pb-16 rounded-xl h-full' : 'w-full shadow-md p-6 pb-16 rounded-xl bg-white'}>
               {form_sections[tab]}
             </div>
 
@@ -159,16 +164,28 @@ function BuilderForm({ tab }) {
         </div>
 
         <div className='px-4 py-4 max-h-screen overflow-y-auto'>
-          {atsScore && (
+          {/* {atsScore && (
             <div className='flex justify-center '>
 
               <h1>{atsScore?.resume_score}</h1>
 
             </div>
-          )}
+          )} */}
+
+        
 
 
-          <div className='absolute bottom-5 right-8 z-20'>
+          <div className='flex justify-between my-2'>
+
+            <button className='flex justify-center items-center gap-2 py-2 px-4 rounded-md bg-black text-white' onClick={handlePrint}>
+              <h1>Download / Print</h1>
+              <MdOutlineFileDownload className='text-xl' />
+            </button>
+
+          </div>
+
+
+          <div className='absolute bottom-5 right-8 z-20 '>
 
             <AIDock setATSModalOpen={setOpenModal} genSuggestions={genSuggestions} />
 
@@ -176,7 +193,7 @@ function BuilderForm({ tab }) {
 
           <div className='flex justify-center '>
             {
-              latexCode !== null ? <LatexResumeShowCase latexCode={latexCode} /> : <ResumeShowCase template_name={"default"} basicDetails={basicDetails} WorkDetails={WorkDetails} educationDetails={educationDetails} projectDetails={projectDetails} skillsDetails={skillsDetails} suggestions={suggestions} />
+              latexCode !== null ? <LatexResumeShowCase latexCode={latexCode} /> : <ResumeShowCase template_name={"default"} basicDetails={basicDetails} WorkDetails={WorkDetails} educationDetails={educationDetails} projectDetails={projectDetails} skillsDetails={skillsDetails} suggestions={suggestions} ref={componentRef} />
             }
           </div>
         </div>

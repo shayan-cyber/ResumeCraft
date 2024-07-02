@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import Spils from '../Spils'
+import { toast } from 'sonner'
 function EducationInfo({ educationDetails, setEducationDetails }) {
   const [singleEducationDetails, setSingleEducationDetails] = useState({
     name: "",
@@ -72,6 +73,10 @@ function EducationInfo({ educationDetails, setEducationDetails }) {
 
       <div>
         <button className='p-2 rounded-md bg-blue-400 text-white text-md' onClick={() => {
+
+          if(singleEducationDetails?.area_of_study === ""|| singleEducationDetails?.name === "" || singleEducationDetails?.level === "" || singleEducationDetails?.result === "")
+            toast.error("Incomplete details")
+          
           setEducationDetails([...educationDetails, {
             ...singleEducationDetails,
             id: educationDetails?.length

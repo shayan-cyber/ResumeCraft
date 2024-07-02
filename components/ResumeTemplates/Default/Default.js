@@ -6,8 +6,8 @@ import { FaExternalLinkAlt } from "react-icons/fa";
 import { sampleData } from '@/constants';
 import { PiWarningCircleFill } from "react-icons/pi";
 
-import SuggestionCard from '../BuilderPage/SuggestionCard';
-function Default({ basicDetails, WorkDetails, educationDetails, projectDetails, skillsDetails, suggestions }) {
+import SuggestionCard from '../../BuilderPage/SuggestionCard';
+const Default = React.forwardRef(({ basicDetails, WorkDetails, educationDetails, projectDetails, skillsDetails, suggestions }, ref) =>{
 
 
   console.log({ suggestions });
@@ -16,7 +16,7 @@ function Default({ basicDetails, WorkDetails, educationDetails, projectDetails, 
   const [openSkillsSuggestion, setOpenSkillsSuggestion] = useState(false);
   return (
 
-    <div className={suggestions?.experience || suggestions?.project || suggestions?.skills ? 'w-full p-6 shadow-md border-2 border-orange-500 relative' : 'w-full p-6 shadow-md border-2 relative'}>
+    <div className={suggestions?.experience || suggestions?.project || suggestions?.skills ? 'w-full p-6 shadow-md border-2 border-orange-500 relative' : 'w-full p-6 shadow-md border-2 relative bg-white'} ref={ref}>
       <div>
 
         <h1 className='text-5xl'>{basicDetails?.name}</h1>
@@ -180,6 +180,6 @@ function Default({ basicDetails, WorkDetails, educationDetails, projectDetails, 
       </div>
     </div>
   )
-}
+})
 
 export default Default

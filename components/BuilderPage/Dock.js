@@ -9,8 +9,8 @@ import { FaChartPie } from "react-icons/fa";
 import { LuCode2 } from "react-icons/lu";
 function Dock({tab, setTab}) {
   return (
-    <div className='h-screen'>
-        <div className='flex flex-col justify-start gap-12 p-2 border-r-2 h-full'>
+    <div className='h-screen bg-white'>
+        <div className='flex flex-col justify-start gap-12 p-2 shadow-md h-full'>
 
             <div className={`flex justify-center items-center rounded-full p-2 cursor-pointer hover:bg-purple-200  ${tab===TABS.BASIC_INFO && "bg-purple-200 text-purple-600"}` } onClick={()=>setTab(TABS.BASIC_INFO)}>
                  <IoMdInformationCircle className='text-3xl' />

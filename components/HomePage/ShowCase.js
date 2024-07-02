@@ -1,5 +1,6 @@
 import React from 'react'
-
+import Dummy from '../ResumeTemplates/Default/Dummy';
+import Link from 'next/link';
 function ShowCase() {
     function handleMouseMove(event, cardName) {
         var card = document.querySelector(`.${cardName}`);
@@ -39,11 +40,13 @@ function ShowCase() {
 
             <div className='flex justify-center py-20'>
 
-                <div className='w-[500px] h-[600px] rounded-2xl shadow-md bg-white card1 cursor-pointer' onMouseMove={(e) => handleMouseMove(e, "card1")} onMouseLeave={(e) => {
+                <Link href={"/select_template"}>
+                <div className='w-[500px] h-[600px] rounded-2xl shadow-md bg-white card1 cursor-pointer hover:shadow-blue-200 hover:shadow-2xl' onMouseMove={(e) => handleMouseMove(e, "card1")} onMouseLeave={(e) => {
                     // handleMouseLeave(e, "card1")
                 }}>
-                    
+                    <Dummy/>
                 </div>
+                </Link>
 
             </div>
 
