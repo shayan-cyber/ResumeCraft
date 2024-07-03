@@ -5,18 +5,18 @@ import { IoIosCall } from "react-icons/io";
 import { FaExternalLinkAlt } from "react-icons/fa";
 import { sampleData } from '@/constants';
 import { PiWarningCircleFill } from "react-icons/pi";
-
+import DOMPurify from 'dompurify'
 import SuggestionCard from '../../BuilderPage/SuggestionCard';
-const Default = React.forwardRef(({ basicDetails, WorkDetails, educationDetails, projectDetails, skillsDetails, suggestions }, ref) =>{
+const Default = ({ basicDetails, WorkDetails, educationDetails, projectDetails, skillsDetails, suggestions }) =>{
 
 
-  console.log({ suggestions });
+  console.log({ basicDetails });
   const [openExpSuggestion, setOpenExpSuggestion] = useState(false)
   const [openProjectSuggestion, setOpenProjectSuggestion] = useState(false)
   const [openSkillsSuggestion, setOpenSkillsSuggestion] = useState(false);
   return (
 
-    <div className={suggestions?.experience || suggestions?.project || suggestions?.skills ? 'w-full p-6 shadow-md border-2 border-orange-500 relative' : 'w-full p-6 shadow-md border-2 relative bg-white'} ref={ref}>
+    <div className={suggestions?.experience || suggestions?.project || suggestions?.skills ? 'w-full p-6 shadow-md border-2 border-orange-500 relative' : 'w-full p-6 shadow-md border-2 relative bg-white'} >
       <div>
 
         <h1 className='text-5xl'>{basicDetails?.name}</h1>
@@ -75,7 +75,7 @@ const Default = React.forwardRef(({ basicDetails, WorkDetails, educationDetails,
                     <h1 className='text-xs font-semibold'>{item?.start_date}  to  {item?.end_date}</h1>
                   </div>
                   <div>
-                    <p className='text-[0.65rem]'>{item?.description}</p>
+                    <p className='text-[0.65rem]' dangerouslySetInnerHTML={{__html:DOMPurify.sanitize(item?.description)}}></p>
                   </div>
                 </div>
               </>
@@ -171,7 +171,7 @@ const Default = React.forwardRef(({ basicDetails, WorkDetails, educationDetails,
                   <div className='flex justify-start items-baseline gap-2'>
                     <h1 className='text-xs'>{item?.tech_stack}</h1>
                   </div>
-                  <p className='text-[0.65rem]'>{item?.description}</p>
+                  <p className='text-[0.65rem]' dangerouslySetInnerHTML={{__html:DOMPurify.sanitize(item?.description)}}></p>
                 </div>
               </>
             )
@@ -180,6 +180,7 @@ const Default = React.forwardRef(({ basicDetails, WorkDetails, educationDetails,
       </div>
     </div>
   )
-})
+}
 
+// Default.displayName = "Default"
 export default Default

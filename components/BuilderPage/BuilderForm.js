@@ -1,4 +1,4 @@
-import React, { useState , useRef} from 'react'
+import React, { useState, useRef } from 'react'
 import BasicInfo from './FormSections/BasicInfo'
 import ResumeShowCase from './ResumeShowCase';
 import WorkExperienceInfo from './FormSections/WorkExperienceInfo';
@@ -40,9 +40,9 @@ function BuilderForm({ tab }) {
   const [atsScore, setAtsScore] = useState({})
   const [latexCode, setLatexCode] = useState(null)
   const [suggestions, setSuggestions] = useState({
-    experience:"",
-    project:"",
-    skills:"",
+    experience: "",
+    project: "",
+    skills: "",
   })
 
   const form_sections = {
@@ -103,13 +103,13 @@ function BuilderForm({ tab }) {
       resumeDescription: buildResumeDescription(),
       title: basicDetails?.title
     }).then((res) => {
-      console.log({res});
+      console.log({ res });
       console.log((res?.data?.text))
       // setAtsScore(JSON.parse(res?.data?.text))
       setSuggestions({
-        experience:res?.data?.text?.experience ? res?.data?.text?.experience : "",
-        project :res?.data?.text?.project ? res?.data?.text?.project : "",
-        skills : res?.data?.text?.skills ? res?.data?.text?.skills : "",
+        experience: res?.data?.text?.experience ? res?.data?.text?.experience : "",
+        project: res?.data?.text?.project ? res?.data?.text?.project : "",
+        skills: res?.data?.text?.skills ? res?.data?.text?.skills : "",
       })
       setLoading(false)
       // setOpenModal(false)
@@ -120,7 +120,7 @@ function BuilderForm({ tab }) {
       })
   }
 
-  console.log({suggestions});
+  console.log({ suggestions });
   const ModalChildren = () => {
     return (
       <div className='rounded-md p-8 w-[50%] bg-white' onClick={(e) => e.stopPropagation()}>
@@ -147,16 +147,19 @@ function BuilderForm({ tab }) {
   return (
     <div className='relative'>
 
-      {openModal && (<Modal children={<ModalChildren />} onClick={() => {
+      {openModal && (<Modal onClick={() => {
 
         setOpenModal(false)
-      }} />)}
+      }} >
+
+        <ModalChildren />
+      </Modal>)}
 
       <div className='grid grid-cols-2 gap-0'>
         <div>
           <div className='flex justify-center items-start px-4 py-6 border-r-2  h-screen overflow-y-auto'>
 
-            <div className={tab === TABS.LATEX ? 'w-full shadow-md p-6 pb-16 rounded-xl h-full' : 'w-full shadow-md p-6 pb-16 rounded-xl bg-white'}>
+            <div className={tab === TABS.LATEX ? 'w-full shadow-md p-6 pb-16 rounded-xl h-full' : 'w-full shadow-md p-6 pb-12 rounded-xl bg-white'}>
               {form_sections[tab]}
             </div>
 
@@ -172,7 +175,7 @@ function BuilderForm({ tab }) {
             </div>
           )} */}
 
-        
+
 
 
           <div className='flex justify-between my-2'>
@@ -193,7 +196,11 @@ function BuilderForm({ tab }) {
 
           <div className='flex justify-center '>
             {
-              latexCode !== null ? <LatexResumeShowCase latexCode={latexCode} /> : <ResumeShowCase template_name={"default"} basicDetails={basicDetails} WorkDetails={WorkDetails} educationDetails={educationDetails} projectDetails={projectDetails} skillsDetails={skillsDetails} suggestions={suggestions} ref={componentRef} />
+              latexCode !== null ? <LatexResumeShowCase latexCode={latexCode} /> : (
+                <div ref={componentRef}>
+                  <ResumeShowCase template_name={"default"} basicDetails={basicDetails} WorkDetails={WorkDetails} educationDetails={educationDetails} projectDetails={projectDetails} skillsDetails={skillsDetails} suggestions={suggestions}  />
+                </div>
+              )
             }
           </div>
         </div>

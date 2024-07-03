@@ -40,8 +40,8 @@ function select_template() {
                     {
                         Object.keys(resumeTemplates).map((item, key)=>{
                             return (
-                                <Link href={`/builder?template=${item}`}>
-                                    <div className='w-full h-[600px] rounded-lg shadow-md bg-white card1 cursor-pointer' onMouseMove={(e)=> handleMouseMove(e, "card1")} onMouseLeave={(e)=>{
+                                <Link href={`/builder?template=${item}`} key={key}>
+                                    <div className='w-full h-[620px] rounded-2xl shadow-md bg-white card1 cursor-pointer' onMouseMove={(e)=> handleMouseMove(e, "card1")} onMouseLeave={(e)=>{
                                         handleMouseLeave(e, "card1")
                                     }}>
                                         {resumeTemplates[item]}

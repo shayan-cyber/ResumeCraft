@@ -16,7 +16,8 @@ function EducationInfo({ educationDetails, setEducationDetails }) {
     setEducationDetails([...filtered])
   }
   return (
-    <div className='w-full'>
+    <div className='w-full pt-2'>
+      <h1 className='text-xl font-[550]'>Education Details</h1>
       <div className='flex flex-wrap justify-start items-center gap-2 mb-5'>
         {educationDetails?.map((item, key) => {
           return (
@@ -48,35 +49,42 @@ function EducationInfo({ educationDetails, setEducationDetails }) {
           area_of_study: e.target.value
         })} />
       </div>
-      <div className='mb-2'>
-        <label htmlFor='start_date' className="block">Start Date</label>
-        <input className=' input-form ' id="start_date" name='start_date' type='date' placeholder='20/01/2020' value={singleEducationDetails?.start_date} onChange={(e) => setSingleEducationDetails({
-          ...singleEducationDetails,
-          start_date: e.target.value
-        })} />
-      </div>
-      <div className='mb-2'>
-        <label htmlFor='end_date' className="block">End Date</label>
-        <input className=' input-form ' id="end_date" name='end_date' type='date' placeholder='20/01/2020' value={singleEducationDetails?.end_date} onChange={(e) => setSingleEducationDetails({
-          ...singleEducationDetails,
-          end_date: e.target.value
-        })} />
+      <div className='mb-4 grid grid-cols-4 gap-2'>
+        <div className='col-span-2'>
+          <label htmlFor='result' className="block">Result</label>
+          <input className=' input-form ' id="result" name='result' placeholder='CGPA' value={singleEducationDetails?.result} onChange={(e) => setSingleEducationDetails({
+            ...singleEducationDetails,
+            result: e.target.value
+          })} />
+        </div>
+        <div className=''>
+          <label htmlFor='start_date' className="block">Start Date</label>
+          <input className=' input-form ' id="start_date" name='start_date' type='date' placeholder='20/01/2020' value={singleEducationDetails?.start_date} onChange={(e) => setSingleEducationDetails({
+            ...singleEducationDetails,
+            start_date: e.target.value
+          })} />
+        </div>
+
+        <div>
+          <label htmlFor='end_date' className="block">End Date</label>
+          <input className=' input-form ' id="end_date" name='end_date' type='date' placeholder='20/01/2020' value={singleEducationDetails?.end_date} onChange={(e) => setSingleEducationDetails({
+            ...singleEducationDetails,
+            end_date: e.target.value
+          })} />
+        </div>
       </div>
 
-      <div className='mb-2'>
-        <label htmlFor='result' className="block">Result</label>
-        <input className=' input-form ' id="result" name='result' placeholder='CGPA' value={singleEducationDetails?.result} onChange={(e) => setSingleEducationDetails({
-          ...singleEducationDetails,
-          result: e.target.value
-        })} />
-      </div>
+
 
       <div>
-        <button className='p-2 rounded-md bg-blue-400 text-white text-md' onClick={() => {
+        <button className='add-btn' onClick={() => {
 
-          if(singleEducationDetails?.area_of_study === ""|| singleEducationDetails?.name === "" || singleEducationDetails?.level === "" || singleEducationDetails?.result === "")
+          if (singleEducationDetails?.area_of_study === "" || singleEducationDetails?.name === "" || singleEducationDetails?.level === "" || singleEducationDetails?.result === "") {
+
             toast.error("Incomplete details")
-          
+            return
+          }
+
           setEducationDetails([...educationDetails, {
             ...singleEducationDetails,
             id: educationDetails?.length

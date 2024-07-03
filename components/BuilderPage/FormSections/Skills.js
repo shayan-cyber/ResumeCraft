@@ -20,8 +20,10 @@ function Skills({skillsDetails, setSkillsDetails}) {
     };
     return (
       <>
-      <label className='mb-4'>Skills</label>
-      <div id="tags" className='mt-2'>
+      <label className='mb-4'>
+      <h1 className='text-xl font-[550]'>Skills</h1>
+      </label>
+      <div id="tags" className='mt-2 mb-4'>
         <ReactTags
           tags={skills}
           delimiters={delimiters}
@@ -29,11 +31,12 @@ function Skills({skillsDetails, setSkillsDetails}) {
           handleAddition={handleAddition}
           inputFieldPosition="bottom"
           autocomplete
+          classNames={"input-form"}
           placeholder='Please Enter a Skill'
           allowDragDrop={false}
         />
       </div>
-      <button className='p-2 rounded-md bg-blue-400 text-white text-md mt-4 px-6' onClick={()=>{
+      <button className='add-btn' onClick={()=>{
         setSkillsDetails(skills)
       }} >Save</button>
       </>

@@ -5,6 +5,8 @@ import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import axios from 'axios';
 import AIResponseCard from '../AIResponseCard';
 import { LuBrain } from "react-icons/lu";
+import RichTextEditor from '../RichTextEditor';
+import { toast } from 'sonner';
 function WorkExperienceInfo({ WorkDetails, setWorkDetails }) {
   const [loading, setLoading] = useState(false)
   const [geminiResponses, setGeminiResponses] = useState([])
@@ -53,8 +55,19 @@ function WorkExperienceInfo({ WorkDetails, setWorkDetails }) {
       description: description
     })
   }
+
+  const setContent = (data) => {
+    setSingleWorkDetails({
+      ...singleworkDetails,
+      description: data
+    })
+  }
+  console.log({ singleworkDetails });
+  console.log({ WorkDetails })
   return (
-    <div className='w-full'>
+    <div className='w-full pt-2'>
+
+      <h1 className='text-xl font-[550]'>Work Details</h1>
 
       <div className='flex flex-wrap justify-start items-center gap-2 mb-5'>
         {WorkDetails?.map((item, key) => {
@@ -110,7 +123,7 @@ function WorkExperienceInfo({ WorkDetails, setWorkDetails }) {
       </div>
 
 
-      <div className='mb-2 relative'>
+      <div className='mb-2 relative mb-4'>
 
         <div className='flex justify-between items-end mb-0'>
 
@@ -136,16 +149,20 @@ function WorkExperienceInfo({ WorkDetails, setWorkDetails }) {
           </div>
         )}
 
-        <textarea className=' input-form ' id="description" name='description' placeholder='I worked on customer support team using django spring reactjs' rows={5} value={singleworkDetails?.description} onChange={(e) => setSingleWorkDetails({
-          ...singleworkDetails,
-          description: e.target.value
-        })} >
+        {/* <textarea className=' input-form ' id="description" name='description' placeholder='I worked on customer support team using django spring reactjs' rows={5} value={singleworkDetails?.description} onChange={(e) => } >
 
-        </textarea>
+        </textarea> */}
+        <RichTextEditor content={singleworkDetails?.description} setContent={setContent} />
       </div>
 
       <div>
-        <button className='p-2 rounded-md bg-blue-400 text-white text-md' onClick={() => {
+        <button className='add-btn' onClick={() => {
+
+          if (singleworkDetails?.title === "" || singleworkDetails?.company_name === "" || singleEducationDetails?.location === "" || singleEducationDetails?.description === "") {
+
+            toast.error("Incomplete details")
+            return
+          }
           setWorkDetails([...WorkDetails, {
             ...singleworkDetails,
             id: WorkDetails?.length

@@ -5,6 +5,8 @@ import axios from 'axios';
 import Spils from '../Spils';
 import { LuBrain } from "react-icons/lu";
 import AIResponseCard from '../AIResponseCard';
+import RichTextEditor from '../RichTextEditor';
+import { toast } from 'sonner';
 function ProjectsInfo({ projectDetails, setProjectDetails }) {
     const [loading, setLoading] = useState(false)
     const [geminiResponses, setGeminiResponses] = useState("")
@@ -50,8 +52,15 @@ function ProjectsInfo({ projectDetails, setProjectDetails }) {
             description: description
         })
     }
+    const setContent = (data)=>{
+        setSingleProjectDetails({
+          ...singleProjectDetails,
+          description: data
+        })
+      }
     return (
-        <div className='w-full'>
+        <div className='w-full pt-2'>
+            <h1 className='text-xl font-[550]'>Project Details</h1>
             <div className='flex flex-wrap justify-start items-center gap-2 mb-5'>
                 {projectDetails?.map((item, key) => {
                     return (
@@ -109,7 +118,7 @@ function ProjectsInfo({ projectDetails, setProjectDetails }) {
             </div>
 
 
-            <div className='mb-2 relative mt-4'>
+            <div className='mb-4 relative mt-4'>
                 <div className='flex justify-between items-end mb-2'>
                     <label htmlFor='description' className="block">Description</label>
 
@@ -133,16 +142,22 @@ function ProjectsInfo({ projectDetails, setProjectDetails }) {
                     </div>
                 )}
 
-                <textarea rows={8} className=' input-form ' id="description" name='description' placeholder='20/01/2020' value={singleProjectDetails?.description} onChange={(e) => setSingleProjectDetails({
+                {/* <textarea rows={8} className=' input-form ' id="description" name='description' placeholder='20/01/2020' value={singleProjectDetails?.description} onChange={(e) => setSingleProjectDetails({
                     ...singleProjectDetails,
                     description: e.target.value
                 })} >
 
-                </textarea>
+                </textarea> */}
+                <RichTextEditor content={singleProjectDetails?.description} setContent={setContent} />
             </div>
 
             <div>
-                <button className='p-2 rounded-md bg-blue-400 text-white text-md' onClick={() => {
+                <button className='add-btn' onClick={() => {
+                    if (singleProjectDetails?.name === ""  || singleProjectDetails?.description === "") {
+
+                        toast.error("Incomplete details")
+                        return
+                      }
                     setProjectDetails([...projectDetails, {
                         ...singleProjectDetails,
                         id: projectDetails?.length
