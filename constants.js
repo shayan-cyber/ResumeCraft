@@ -83,3 +83,11 @@ export const sampleData = {
 
     ]
 }
+
+export const COLORS = [
+    "#4f46e5", "#28b95f", "#991b1b", "#000000"
+]
+
+export const FONTS = [
+    "roboto", "openSans"
+]

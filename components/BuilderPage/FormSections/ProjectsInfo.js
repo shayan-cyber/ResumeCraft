@@ -58,6 +58,7 @@ function ProjectsInfo({ projectDetails, setProjectDetails }) {
           description: data
         })
       }
+
     return (
         <div className='w-full pt-2'>
             <h1 className='text-xl font-[550]'>Project Details</h1>
@@ -148,7 +149,7 @@ function ProjectsInfo({ projectDetails, setProjectDetails }) {
                 })} >
 
                 </textarea> */}
-                <RichTextEditor content={singleProjectDetails?.description} setContent={setContent} />
+                <RichTextEditor content={singleProjectDetails} setContent={setContent} />
             </div>
 
             <div>

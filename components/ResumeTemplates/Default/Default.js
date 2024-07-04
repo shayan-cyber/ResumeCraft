@@ -7,7 +7,7 @@ import { sampleData } from '@/constants';
 import { PiWarningCircleFill } from "react-icons/pi";
 import DOMPurify from 'dompurify'
 import SuggestionCard from '../../BuilderPage/SuggestionCard';
-const Default = ({ basicDetails, WorkDetails, educationDetails, projectDetails, skillsDetails, suggestions }) =>{
+const Default = ({ basicDetails, WorkDetails, educationDetails, projectDetails, skillsDetails, suggestions, font, color }) =>{
 
 
   console.log({ basicDetails });
@@ -16,31 +16,41 @@ const Default = ({ basicDetails, WorkDetails, educationDetails, projectDetails, 
   const [openSkillsSuggestion, setOpenSkillsSuggestion] = useState(false);
   return (
 
-    <div className={suggestions?.experience || suggestions?.project || suggestions?.skills ? 'w-full p-6 shadow-md border-2 border-orange-500 relative' : 'w-full p-6 shadow-md border-2 relative bg-white'} >
+    <div className={suggestions?.experience || suggestions?.project || suggestions?.skills ? 'w-full p-6 shadow-md border-2 border-orange-500 relative ' : 'w-full p-6 shadow-md border-2 relative bg-white ' + font} >
       <div>
 
         <h1 className='text-5xl'>{basicDetails?.name}</h1>
-        <h6 className='text-md text-blue-600 mt-2'>{basicDetails?.title}</h6>
+        <h6 className='text-md text-blue-600 mt-2'  style={{
+          color:color
+        }}>{basicDetails?.title}</h6>
 
       </div>
       <div className='flex justify-between items-center my-4'>
         <div className='flex justify-start items-center'>
-          <p className='text-blue-600'>@</p>
+          <p className='text-blue-600' style={{
+            color:color
+          }}>@</p>
           <p className='ml-1'>{basicDetails?.email}</p>
         </div>
 
         <div className='flex justify-start items-center'>
-          <p className='text-blue-600'><IoIosCall /></p>
+          <p className='text-blue-600' style={{
+            color:color
+          }}><IoIosCall /></p>
           <p className='ml-1'>{basicDetails?.phone}</p>
         </div>
       </div>
 
       <div className='flex justify-start gap-12 items-center my-4'>
         <div className='flex justify-start items-center'>
-          <Link href={basicDetails.linkedInLink}><p className='text-blue-600'><FaLinkedinIn /></p></Link>
+          <Link href={basicDetails.linkedInLink}><p className='text-blue-600' style={{
+                      color:color
+                    }}><FaLinkedinIn /></p></Link>
         </div>
         <div className='flex justify-start items-center'>
-          <Link href={basicDetails.linkedInLink}><p className='text-blue-600'><FaGithub /></p></Link>
+          <Link href={basicDetails.linkedInLink}><p className='text-blue-600' style={{
+                      color:color
+                    }}><FaGithub /></p></Link>
         </div>
       </div>
 
@@ -62,7 +72,9 @@ const Default = ({ basicDetails, WorkDetails, educationDetails, projectDetails, 
             </div>
           )}
         </div>
-        <hr className='border-t-4 border-blue-600' />
+        <hr className='border-t-4 border-blue-600' style={{
+          borderColor:color
+        }} />
         <div className=' my-4'>
 
           {(WorkDetails?.length > 0 ? WorkDetails : sampleData?.WorkDetails).map((item, key) => {
@@ -71,7 +83,9 @@ const Default = ({ basicDetails, WorkDetails, educationDetails, projectDetails, 
                 <div className='my-4'>
                   <h1 className='text-lg'>{item?.title}</h1>
                   <div className='flex justify-between items-center'>
-                    <h1 className='text-sm text-blue-600'>{item?.company_name}</h1>
+                    <h1 className='text-sm text-blue-600' style={{
+                      color:color
+                    }}>{item?.company_name}</h1>
                     <h1 className='text-xs font-semibold'>{item?.start_date}  to  {item?.end_date}</h1>
                   </div>
                   <div>
@@ -104,7 +118,9 @@ const Default = ({ basicDetails, WorkDetails, educationDetails, projectDetails, 
           )}
         </div>
 
-        <hr className='border-t-4 border-blue-600' />
+        <hr className='border-t-4 border-blue-600' style={{
+          borderColor:color
+        }} />
         <ul className=' my-2 flex justify-start flex-wrap'>
 
           {(skillsDetails?.length > 0 ? skillsDetails : sampleData?.skillsDetails).map((item, key) => {
@@ -119,7 +135,9 @@ const Default = ({ basicDetails, WorkDetails, educationDetails, projectDetails, 
         </ul>
       </div>
       <h1 className='text-2xl mt-6 mb-1'>EDUCATION</h1>
-      <hr className='border-t-4 border-blue-600' />
+      <hr className='border-t-4 border-blue-600' style={{
+          borderColor:color
+        }} />
       <div className=' my-4'>
 
         {(educationDetails?.length > 0 ? educationDetails : sampleData?.educationDetails).map((item, key) => {
@@ -131,7 +149,9 @@ const Default = ({ basicDetails, WorkDetails, educationDetails, projectDetails, 
                   <h1 className='text-xs font-semibold'>{item?.start_date}  to  {item?.end_date}</h1>
                 </div>
                 <div className='flex justify-start items-baseline gap-2'>
-                  <h1 className='text-md text-blue-600'>{item?.name}</h1>
+                  <h1 className='text-md text-blue-600' style={{
+                    color:color
+                  }}>{item?.name}</h1>
                   <h1 className='text-xs'>{item?.result}</h1>
                 </div>
               </div>
@@ -157,7 +177,9 @@ const Default = ({ basicDetails, WorkDetails, educationDetails, projectDetails, 
             </div>
           )}
         </div>
-        <hr className='border-t-4 border-blue-600' />
+        <hr className='border-t-4 border-blue-600' style={{
+          borderColor:color
+        }} />
         <div className=' my-4'>
 
           {(projectDetails?.length > 0 ? projectDetails : sampleData?.projectDetails).map((item, key) => {
@@ -165,7 +187,9 @@ const Default = ({ basicDetails, WorkDetails, educationDetails, projectDetails, 
               <>
                 <div className='my-4'>
                   <div className='flex justify-between items-center'>
-                    <Link href={item?.link}><h1 className='text-lg text-blue-600'>{item?.name} {" "} <FaExternalLinkAlt /> </h1></Link>
+                    <Link href={item?.link}><h1 className='text-lg text-blue-600' style={{
+                      color:color
+                    }}>{item?.name} {" "} <FaExternalLinkAlt /> </h1></Link>
                     <h1 className='text-xs font-semibold'>{item?.start_date}  to  {item?.end_date}</h1>
                   </div>
                   <div className='flex justify-start items-baseline gap-2'>

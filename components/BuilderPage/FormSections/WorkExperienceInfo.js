@@ -50,10 +50,8 @@ function WorkExperienceInfo({ WorkDetails, setWorkDetails }) {
   }
 
   const setSelectResponse = (description) => {
-    setSingleWorkDetails({
-      ...singleworkDetails,
-      description: description
-    })
+    let details = {...singleworkDetails, description:description}
+    setSingleWorkDetails(details)
   }
 
   const setContent = (data) => {
@@ -152,13 +150,13 @@ function WorkExperienceInfo({ WorkDetails, setWorkDetails }) {
         {/* <textarea className=' input-form ' id="description" name='description' placeholder='I worked on customer support team using django spring reactjs' rows={5} value={singleworkDetails?.description} onChange={(e) => } >
 
         </textarea> */}
-        <RichTextEditor content={singleworkDetails?.description} setContent={setContent} />
+        <RichTextEditor content={singleworkDetails} setContent={setContent} />
       </div>
 
       <div>
         <button className='add-btn' onClick={() => {
 
-          if (singleworkDetails?.title === "" || singleworkDetails?.company_name === "" || singleEducationDetails?.location === "" || singleEducationDetails?.description === "") {
+          if (singleworkDetails?.title === "" || singleworkDetails?.company_name === "" || singleworkDetails?.location === "" || singleworkDetails?.description === "") {
 
             toast.error("Incomplete details")
             return

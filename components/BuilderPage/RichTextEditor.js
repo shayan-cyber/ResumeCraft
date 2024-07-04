@@ -4,10 +4,14 @@ import { useEditor, EditorContent, EditorProvider, useCurrentEditor, getAttribut
 import StarterKit from '@tiptap/starter-kit'
 import { FaBold, FaItalic } from "react-icons/fa";
 import cn from 'classnames'
-const MenuBar = ()=>{
+import { useEffect, useState } from 'react';
+const MenuBar = ({content})=>{
   const {editor} = useCurrentEditor()
   if(!editor)
     return null;
+  useEffect(()=>{
+    editor?.commands.setContent(content)
+  },[editor, content])
   return (
     <>
     <div className='flex gap-1 mb-1 mt-[-.6rem] justify-start items-center'>
@@ -25,12 +29,20 @@ const MenuBar = ()=>{
 
 const RichTextEditor = ({content, setContent}) => {
     const extensions = [StarterKit]
+    console.log({content});
+    const [innerContent, setInnerContent] = useState(content?.description)
+    useEffect(()=>{
+      console.log("hello here");
+      setInnerContent(content?.description)
+    },[content])
+    console.log("hello");
     return (
       <div className=''>
         <EditorProvider 
+        editable
         extensions={extensions}
-        slotBefore={<MenuBar/>}
-        content={content}
+        slotBefore={<MenuBar content={innerContent}/>}
+        content={innerContent}
         onUpdate={({editor})=> {
           // onChange(editor.getHTML())
           // console.log(editor.getHTML());
@@ -41,7 +53,7 @@ const RichTextEditor = ({content, setContent}) => {
         editorProps={
           {
             attributes:{
-              class:"h-[200px] p-2 border-2 rounded-xl w-full bg-gray-100 focus:outline-none focus:bg-blue-50"
+              class:"max-h-[200px] overflow-y-auto p-2 border-2 rounded-xl w-full bg-gray-100 focus:outline-none focus:bg-blue-50"
             }
           }
         }
