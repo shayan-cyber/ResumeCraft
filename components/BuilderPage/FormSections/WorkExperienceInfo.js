@@ -9,6 +9,7 @@ import RichTextEditor from '../RichTextEditor';
 import { toast } from 'sonner';
 function WorkExperienceInfo({ WorkDetails, setWorkDetails }) {
   const [loading, setLoading] = useState(false)
+  const [editID, setEditID] = useState(null)
   const [geminiResponses, setGeminiResponses] = useState([])
   const [singleworkDetails, setSingleWorkDetails] = useState({
     title: "",
@@ -25,6 +26,40 @@ function WorkExperienceInfo({ WorkDetails, setWorkDetails }) {
     setWorkDetails([...filtered])
   }
 
+  const handleEditClick = (id) => {
+    console.log({ id });
+    let filtered = WorkDetails.filter((item) => item?.id === id)
+    console.log({ filtered });
+    setSingleWorkDetails(filtered[0])
+    setEditID(id)
+  }
+
+  const handleEdit = () =>{
+
+    const filtered = WorkDetails.map((item) =>{
+      if(item?.id === editID){
+        return {
+          ...singleworkDetails,
+          id:editID
+        }
+      }else{
+        return item;
+      }
+    })
+    setWorkDetails([...filtered]);
+
+    setSingleWorkDetails({
+      title: "",
+      company_name: "",
+      location: "",
+      start_date: "",
+      end_date: "",
+      description: ""
+    })
+    setGeminiResponses([])
+    setEditID(null)
+  }
+  console.log("Edit: ", WorkDetails);
   const handleGemini = () => {
     if (loading || singleworkDetails?.description === "")
       return
@@ -50,7 +85,7 @@ function WorkExperienceInfo({ WorkDetails, setWorkDetails }) {
   }
 
   const setSelectResponse = (description) => {
-    let details = {...singleworkDetails, description:description}
+    let details = { ...singleworkDetails, description: description }
     setSingleWorkDetails(details)
   }
 
@@ -67,11 +102,11 @@ function WorkExperienceInfo({ WorkDetails, setWorkDetails }) {
 
       <h1 className='text-xl font-[550]'>Work Details</h1>
 
-      <div className='flex flex-wrap justify-start items-center gap-2 mb-5'>
+      <div className='flex flex-wrap justify-start items-center gap-2 mb-5 mt-2'>
         {WorkDetails?.map((item, key) => {
           return (
             <>
-              <Spils text={item?.title} onClick={handleDelete} id={item?.id} />
+              <Spils text={item?.title} onDelete={handleDelete} onEdit={handleEditClick} id={item?.id} />
             </>
           )
         })}
@@ -154,29 +189,47 @@ function WorkExperienceInfo({ WorkDetails, setWorkDetails }) {
       </div>
 
       <div>
-        <button className='add-btn' onClick={() => {
+        {
+          editID !== null ? (
+            <button className='add-btn' onClick={() => {
 
-          if (singleworkDetails?.title === "" || singleworkDetails?.company_name === "" || singleworkDetails?.location === "" || singleworkDetails?.description === "") {
+              if (singleworkDetails?.title === "" || singleworkDetails?.company_name === "" || singleworkDetails?.location === "" || singleworkDetails?.description === "") {
 
-            toast.error("Incomplete details")
-            return
-          }
-          setWorkDetails([...WorkDetails, {
-            ...singleworkDetails,
-            id: WorkDetails?.length
-          }])
-          setSingleWorkDetails({
-            title: "",
-            company_name: "",
-            location: "",
-            start_date: "",
-            end_date: "",
-            description: ""
-          })
-          setGeminiResponses([])
-        }}>
-          Add
-        </button>
+                toast.error("Incomplete details")
+                return
+              }
+              handleEdit()
+              
+            }}>
+              Edit
+            </button>
+          ) : (
+
+            <button className='add-btn' onClick={() => {
+
+              if (singleworkDetails?.title === "" || singleworkDetails?.company_name === "" || singleworkDetails?.location === "" || singleworkDetails?.description === "") {
+
+                toast.error("Incomplete details")
+                return
+              }
+              setWorkDetails([...WorkDetails, {
+                ...singleworkDetails,
+                id: WorkDetails?.length
+              }])
+              setSingleWorkDetails({
+                title: "",
+                company_name: "",
+                location: "",
+                start_date: "",
+                end_date: "",
+                description: ""
+              })
+              setGeminiResponses([])
+            }}>
+              Add
+            </button>
+          )
+        }
       </div>
 
     </div>

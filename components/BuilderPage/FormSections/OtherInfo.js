@@ -4,17 +4,50 @@ function OtherInfo({ otherDetails, setOtherDetails }) {
   const [singleOtherDetails, setSingleOtherDetails] = useState({
     description: ""
   })
+  const [editID, setEditID] = useState(null)
   const handleDelete = (id) => {
     let filtered = otherDetails.filter((item) => item?.id !== id)
     setOtherDetails([...filtered])
-}
+  }
+
+  const handleEditClick = (id) => {
+    console.log({ id });
+    let filtered = otherDetails.filter((item) => item?.id === id)
+    console.log({ filtered });
+    setSingleOtherDetails(filtered[0])
+    setEditID(id)
+  }
+
+  const handleEdit = () =>{
+
+    const filtered = otherDetails.map((item) =>{
+      if(item?.id === editID){
+        return {
+          ...singleOtherDetails,
+          id:editID
+        }
+      }else{
+        return item;
+      }
+    })
+    setOtherDetails([...filtered]);
+
+    setSingleOtherDetails({
+
+      description: ""
+    })
+    // setGeminiResponses([])
+    setEditID(null)
+  }
   return (
     <div className='w-full'>
-      <div className='flex flex-wrap justify-start items-center gap-2 mb-5'>
+
+      <h1 className='text-xl font-[550]'>Other Details Details</h1>
+      <div className='flex flex-wrap justify-start items-center gap-2 mb-5 mt-2'>
         {otherDetails?.map((item, key) => {
           return (
             <>
-              <Spils text={key+1} onClick={handleDelete} id={item?.id} />
+              <Spils text={item?.description?.slice(0,5) +"...."} onDelete={handleDelete} onEdit={handleEditClick} id={item?.id} />
             </>
           )
         })}
@@ -30,20 +63,35 @@ function OtherInfo({ otherDetails, setOtherDetails }) {
       </div>
 
       <div>
-        <button className='p-2 rounded-md bg-blue-400 text-white text-md' onClick={() => {
-          setOtherDetails([...otherDetails, {
-            id:otherDetails?.length,
-            ...singleOtherDetails
-          }])
-
-          setSingleOtherDetails({
-            description: ""
-          })
-
-
-        }}>
-          Add
-        </button>
+        {
+          editID !== null ? (
+            <button className='add-btn' onClick={() => {
+              if(singleOtherDetails?.description == "")
+                return 
+              handleEdit()
+    
+            }}>
+              Edit
+            </button>
+          ):(
+            <button className='add-btn' onClick={() => {
+              if(singleOtherDetails?.description == "")
+                return 
+              setOtherDetails([...otherDetails, {
+                id: otherDetails?.length,
+                ...singleOtherDetails
+              }])
+    
+              setSingleOtherDetails({
+                description: ""
+              })
+    
+    
+            }}>
+              Add
+            </button>
+          )
+        }
       </div>
 
     </div>

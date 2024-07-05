@@ -10,6 +10,7 @@ import { toast } from 'sonner';
 function ProjectsInfo({ projectDetails, setProjectDetails }) {
     const [loading, setLoading] = useState(false)
     const [geminiResponses, setGeminiResponses] = useState("")
+    const [editID, setEditID] = useState(null)
     const [singleProjectDetails, setSingleProjectDetails] = useState({
         name: "",
         description: "",
@@ -46,27 +47,61 @@ function ProjectsInfo({ projectDetails, setProjectDetails }) {
         let filtered = projectDetails.filter((item) => item?.id !== id)
         setProjectDetails([...filtered])
     }
+
+    const handleEditClick = (id) => {
+        console.log({ id });
+        let filtered = projectDetails.filter((item) => item?.id === id)
+        console.log({ filtered });
+        setSingleProjectDetails(filtered[0])
+        setEditID(id)
+    }
+
+    const handleEdit = () => {
+
+        const filtered = projectDetails.map((item) => {
+            if (item?.id === editID) {
+                return {
+                    ...singleProjectDetails,
+                    id: editID
+                }
+            } else {
+                return item;
+            }
+        })
+        setProjectDetails([...filtered]);
+
+        setSingleProjectDetails({
+            name: "",
+            description: "",
+            tech_stack: "",
+            start_date: "",
+            end_date: "",
+            link: ""
+        })
+        setGeminiResponses([])
+        setEditID(null)
+    }
     const setSelectResponse = (description) => {
         setSingleProjectDetails({
             ...singleProjectDetails,
             description: description
         })
     }
-    const setContent = (data)=>{
+    const setContent = (data) => {
         setSingleProjectDetails({
-          ...singleProjectDetails,
-          description: data
+            ...singleProjectDetails,
+            description: data
         })
-      }
+    }
 
     return (
         <div className='w-full pt-2'>
             <h1 className='text-xl font-[550]'>Project Details</h1>
-            <div className='flex flex-wrap justify-start items-center gap-2 mb-5'>
+            <div className='flex flex-wrap justify-start items-center gap-2 mb-5 mt-2'>
                 {projectDetails?.map((item, key) => {
                     return (
                         <>
-                            <Spils text={item?.name} onClick={handleDelete} id={item?.id} />
+                            <Spils text={item?.name} onDelete={handleDelete} onEdit={handleEditClick} id={item?.id} />
                         </>
                     )
                 })}
@@ -153,28 +188,43 @@ function ProjectsInfo({ projectDetails, setProjectDetails }) {
             </div>
 
             <div>
-                <button className='add-btn' onClick={() => {
-                    if (singleProjectDetails?.name === ""  || singleProjectDetails?.description === "") {
+                {editID !== null ? (
+                    <button className='add-btn' onClick={() => {
+                        if (singleProjectDetails?.name === "" || singleProjectDetails?.description === "") {
 
-                        toast.error("Incomplete details")
-                        return
-                      }
-                    setProjectDetails([...projectDetails, {
-                        ...singleProjectDetails,
-                        id: projectDetails?.length
-                    }])
-                    setSingleProjectDetails({
-                        name: "",
-                        description: "",
-                        tech_stack: "",
-                        start_date: "",
-                        end_date: "",
-                        link: ""
-                    })
-                    setGeminiResponses([])
-                }}>
-                    Add
-                </button>
+                            toast.error("Incomplete details")
+                            return
+                        }
+                        handleEdit()
+                    }}>
+                        Edit
+                    </button>
+
+                ) : (
+
+                    <button className='add-btn' onClick={() => {
+                        if (singleProjectDetails?.name === "" || singleProjectDetails?.description === "") {
+
+                            toast.error("Incomplete details")
+                            return
+                        }
+                        setProjectDetails([...projectDetails, {
+                            ...singleProjectDetails,
+                            id: projectDetails?.length
+                        }])
+                        setSingleProjectDetails({
+                            name: "",
+                            description: "",
+                            tech_stack: "",
+                            start_date: "",
+                            end_date: "",
+                            link: ""
+                        })
+                        setGeminiResponses([])
+                    }}>
+                        Add
+                    </button>
+                )}
             </div>
 
         </div>

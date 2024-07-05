@@ -81,6 +81,13 @@ export const sampleData = {
     ],
     otherDetails: [
 
+        {
+            description:"Won CODE for Good in 2023",
+        },
+        {
+            description:"Gold Medalist in Btech "
+        }
+
     ]
 }
 

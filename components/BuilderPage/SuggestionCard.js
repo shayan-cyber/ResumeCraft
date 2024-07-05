@@ -8,9 +8,9 @@ function SuggestionCard({closeCard, suggestion}) {
             <div className='flex justify-start items-center gap-1 mb-2'>
 
               <div>
-                <RiBrainLine className='text-orange-500' />
+                <RiBrainLine className='text-orange-400' />
               </div>
-              <h1 className='text-orange-500 mb-[2px]'>Suggestions</h1>
+              <h1 className='text-orange-400 mb-[2px]'>Suggestions</h1>
 
             </div>
             <div className='mb-1 cursor-pointer' onClick={()=> closeCard()}>

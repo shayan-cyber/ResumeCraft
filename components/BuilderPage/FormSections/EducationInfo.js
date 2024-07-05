@@ -10,6 +10,41 @@ function EducationInfo({ educationDetails, setEducationDetails }) {
     end_date: "",
     result: ""
   })
+  const [editID, setEditID] = useState(null)
+
+  const handleEditClick = (id) => {
+    console.log({ id });
+    let filtered = educationDetails.filter((item) => item?.id === id)
+    console.log({ filtered });
+    setSingleEducationDetails(filtered[0])
+    setEditID(id)
+  }
+
+  const handleEdit = () => {
+
+    const filtered = educationDetails.map((item) => {
+      if (item?.id === editID) {
+        return {
+          ...singleEducationDetails,
+          id: editID
+        }
+      } else {
+        return item;
+      }
+    })
+    setEducationDetails([...filtered]);
+
+    setSingleEducationDetails({
+      name: "",
+      level: "",
+      area_of_study: "",
+      start_date: "",
+      end_date: "",
+      result: ""
+    })
+    // setGeminiResponses([])
+    setEditID(null)
+  }
 
   const handleDelete = (id) => {
     let filtered = educationDetails.filter((item) => item?.id !== id)
@@ -18,11 +53,11 @@ function EducationInfo({ educationDetails, setEducationDetails }) {
   return (
     <div className='w-full pt-2'>
       <h1 className='text-xl font-[550]'>Education Details</h1>
-      <div className='flex flex-wrap justify-start items-center gap-2 mb-5'>
+      <div className='flex flex-wrap justify-start items-center gap-2 mb-5 mt-2'>
         {educationDetails?.map((item, key) => {
           return (
             <>
-              <Spils text={item?.name} onClick={handleDelete} id={item?.id} />
+              <Spils key={key} text={item?.name} onDelete={handleDelete} onEdit={handleEditClick} id={item?.id} />
             </>
           )
         })}
@@ -77,29 +112,48 @@ function EducationInfo({ educationDetails, setEducationDetails }) {
 
 
       <div>
-        <button className='add-btn' onClick={() => {
+        {
+          editID !== null ? (
+            <button className='add-btn' onClick={() => {
 
-          if (singleEducationDetails?.area_of_study === "" || singleEducationDetails?.name === "" || singleEducationDetails?.level === "" || singleEducationDetails?.result === "") {
+              if (singleEducationDetails?.area_of_study === "" || singleEducationDetails?.name === "" || singleEducationDetails?.level === "" || singleEducationDetails?.result === "") {
 
-            toast.error("Incomplete details")
-            return
-          }
+                toast.error("Incomplete details")
+                return
+              }
 
-          setEducationDetails([...educationDetails, {
-            ...singleEducationDetails,
-            id: educationDetails?.length
-          }])
-          setSingleEducationDetails({
-            name: "",
-            level: "",
-            area_of_study: "",
-            start_date: "",
-            end_date: "",
-            result: ""
-          })
-        }}>
-          Add
-        </button>
+              handleEdit()
+            }}>
+              Edit
+            </button>
+          ) : (
+
+
+            <button className='add-btn' onClick={() => {
+
+              if (singleEducationDetails?.area_of_study === "" || singleEducationDetails?.name === "" || singleEducationDetails?.level === "" || singleEducationDetails?.result === "") {
+
+                toast.error("Incomplete details")
+                return
+              }
+
+              setEducationDetails([...educationDetails, {
+                ...singleEducationDetails,
+                id: educationDetails?.length
+              }])
+              setSingleEducationDetails({
+                name: "",
+                level: "",
+                area_of_study: "",
+                start_date: "",
+                end_date: "",
+                result: ""
+              })
+            }}>
+              Add
+            </button>
+          )
+        }
       </div>
 
     </div>

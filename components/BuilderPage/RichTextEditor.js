@@ -53,7 +53,7 @@ const RichTextEditor = ({content, setContent}) => {
         editorProps={
           {
             attributes:{
-              class:"max-h-[200px] overflow-y-auto p-2 border-2 rounded-xl w-full bg-gray-100 focus:outline-none focus:bg-blue-50"
+              class:"max-h-[200px] h-[200px] overflow-y-auto p-2 border-2 rounded-xl w-full bg-gray-100 focus:outline-none focus:bg-blue-50"
             }
           }
         }

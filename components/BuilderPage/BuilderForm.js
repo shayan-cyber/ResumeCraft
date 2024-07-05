@@ -18,6 +18,7 @@ import { useReactToPrint } from 'react-to-print'
 import { toast } from 'sonner';
 import { FaPaintbrush } from "react-icons/fa6";
 import { RxFontFamily } from "react-icons/rx";
+import { FaEye } from "react-icons/fa";
 function BuilderForm({ tab, isLoading, setIsLoading }) {
   const componentRef = useRef();
   const handlePrint = useReactToPrint({
@@ -40,7 +41,7 @@ function BuilderForm({ tab, isLoading, setIsLoading }) {
   const [openModal, setOpenModal] = useState(false);
   // const [loading, setLoading] = useState(false)
   const [jobDescription, setJobDescription] = useState("")
-  const [atsScore, setAtsScore] = useState({})
+  const [atsScore, setAtsScore] = useState(null)
   const [latexCode, setLatexCode] = useState(null)
   const [suggestions, setSuggestions] = useState({
     experience: "",
@@ -51,7 +52,7 @@ function BuilderForm({ tab, isLoading, setIsLoading }) {
 
   const [color, setColor] = useState("indigo-600")
   const [font, setFont] = useState("roboto")
-
+  const [preview, setPreview] = useState(false)
   const form_sections = {
     BASIC_INFO: <BasicInfo basicDetails={basicDetails} setBasicDetails={setBasicDetails} />,
     WORK_EXPERIENCE: <WorkExperienceInfo WorkDetails={WorkDetails} setWorkDetails={setWorkDetails} />,
@@ -170,7 +171,7 @@ function BuilderForm({ tab, isLoading, setIsLoading }) {
           </div>
           <div className=''>
 
-            <button className='add-btn mt-3 disabled:opacity-60 disabled:hover:scale-100' onClick={(e) => {
+            <button disabled={!jobDescription} className='add-btn mt-3 disabled:opacity-60 disabled:hover:scale-100' onClick={(e) => {
 
               e.stopPropagation()
               calculateScore()
@@ -182,9 +183,13 @@ function BuilderForm({ tab, isLoading, setIsLoading }) {
 
         </div>
       </Modal>)}
+      <button className='absolute block md:hidden top-4 right-4 rounded-full p-2 bg-black text-white' onClick={() => setPreview(!preview)}>
+        <FaEye />
+      </button>
+      <div className='grid grid-cols-1 md:grid-cols-2 gap-0'>
 
-      <div className='grid grid-cols-2 gap-0'>
-        <div>
+
+        <div className={preview ? `hidden md:block` : `block md:block`}>
           <div className='flex justify-center items-start px-4 py-6 border-r-2  h-screen overflow-y-auto'>
 
             <div className={tab === TABS.LATEX ? 'w-full shadow-md p-6 pb-16 rounded-xl h-full' : 'w-full shadow-md p-6 pb-12 rounded-xl bg-white'}>
@@ -194,8 +199,10 @@ function BuilderForm({ tab, isLoading, setIsLoading }) {
           </div>
         </div>
 
-        <div className='px-4 py-4 max-h-screen overflow-y-auto '>
-          {/* {atsScore && (
+        <div className={preview ? `block md:block` : `hidden md:block`}>
+
+          <div className='px-4 py-12 md:py-4 max-h-screen overflow-y-auto '>
+            {/* {atsScore && (
             <div className='flex justify-center '>
 
               <h1>{atsScore?.resume_score}</h1>
@@ -206,87 +213,88 @@ function BuilderForm({ tab, isLoading, setIsLoading }) {
 
 
 
-          <div className='flex justify-between my-2 items-center relative'>
+            <div className='flex justify-between my-2 items-center relative'>
 
-            <button className='flex justify-center items-center gap-2 add-btn' onClick={handlePrint}>
-              <h1>Download / Print</h1>
-              <MdOutlineFileDownload className='text-xl' />
-            </button>
+              <button className='flex justify-center items-center gap-2 add-btn' onClick={handlePrint}>
+                <h1>Download / Print</h1>
+                <MdOutlineFileDownload className='text-xl' />
+              </button>
 
-            <button className='p-2 rounded-full text-white bg-black text-lg hover:scale-105' onClick={() => setOpenToolBar(!openToolBar)}>
+              <button className='p-2 rounded-full text-white bg-black text-lg hover:scale-105' onClick={() => setOpenToolBar(!openToolBar)}>
 
-              <FaPaintbrush />
+                <FaPaintbrush />
 
-            </button>
+              </button>
 
-            {
-              openToolBar && (
-                <div className='absolute bg-white z-20 top-12 right-0 w-[200px] rounded-xl p-3 shadow-lg' >
+              {
+                openToolBar && (
+                  <div className='absolute bg-white z-20 top-12 right-0 w-[200px] rounded-xl p-3 shadow-lg' >
 
-                  <div className='grid grid-cols-4 gap-2 my-2 mb-4'>
-                    {
-                      COLORS?.map((item, key) => {
-                        return (
-                          <>
-                            <div key={key} style={{
-                              backgroundColor: item
-                            }} className={` rounded-full h-[1.5rem] w-full cursor-pointer ${color === item && " scale-125"} `} onClick={() => {
-                              setColor(item)
-                            }} >
+                    <div className='grid grid-cols-4 gap-2 my-2 mb-4'>
+                      {
+                        COLORS?.map((item, key) => {
+                          return (
+                            <>
+                              <div key={key} style={{
+                                backgroundColor: item
+                              }} className={` rounded-full h-[1.5rem] w-full cursor-pointer ${color === item && " scale-125"} `} onClick={() => {
+                                setColor(item)
+                              }} >
 
+                              </div>
+                            </>
+                          )
+                        })
+                      }
+
+
+                    </div>
+                    {FONTS?.map((item, key) => {
+                      return (
+                        <>
+                          <div className={`w-full flex justify-start rounded-lg p-0 border-2 my-2 cursor-pointer group hover:border-gray-400 ${item === font && "border-gray-400"}`} key={key} onClick={() => {
+                            setFont(item)
+                          }}>
+
+                            <div className='border-r-2 p-1 text-sm group-hover:border-gray-400'>
+                              <RxFontFamily />
                             </div>
-                          </>
-                        )
-                      })
-                    }
+                            <div className='text-xs p-1 flex justify-center'>
+                              <p className={`${item} text-center`}>{item}</p>
+                            </div>
+
+                          </div>
+                        </>
+                      )
+                    })}
+
+
+
 
 
                   </div>
-                  {FONTS?.map((item, key) => {
-                    return (
-                      <>
-                        <div className={`w-full flex justify-start rounded-lg p-0 border-2 my-2 cursor-pointer group hover:border-gray-400 ${item === font && "border-gray-400"}`} key={key} onClick={() => {
-                          setFont(item)
-                        }}>
-
-                          <div className='border-r-2 p-1 text-sm group-hover:border-gray-400'>
-                            <RxFontFamily />
-                          </div>
-                          <div className='text-xs p-1 flex justify-center'>
-                            <p className={`${item} text-center`}>{item}</p>
-                          </div>
-
-                        </div>
-                      </>
-                    )
-                  })}
+                )
+              }
 
 
+            </div>
 
 
+            <div className='absolute bottom-5 right-8 z-20 '>
 
-                </div>
-              )
-            }
+              <AIDock setATSModalOpen={setOpenModal} genSuggestions={genSuggestions} isLoading={isLoading} setIsLoading={setIsLoading} />
 
+            </div>
 
-          </div>
-
-
-          <div className='absolute bottom-5 right-8 z-20 '>
-
-            <AIDock setATSModalOpen={setOpenModal} genSuggestions={genSuggestions} isLoading={isLoading} setIsLoading={setIsLoading} />
-
-          </div>
-
-          <div className='flex justify-center '>
-            {
-              latexCode !== null ? <LatexResumeShowCase latexCode={latexCode} /> : (
-                <div ref={componentRef}>
-                  <ResumeShowCase template_name={"default"} basicDetails={basicDetails} WorkDetails={WorkDetails} educationDetails={educationDetails} projectDetails={projectDetails} skillsDetails={skillsDetails} suggestions={suggestions} font={font} color={color} />
-                </div>
-              )
-            }
+            <div className='flex justify-center '>
+              {
+                latexCode !== null ? <LatexResumeShowCase latexCode={latexCode} /> : (
+                  <div ref={componentRef}>
+                    <ResumeShowCase template_name={"default"} basicDetails={basicDetails} WorkDetails={WorkDetails} educationDetails={educationDetails} projectDetails={projectDetails} skillsDetails={skillsDetails} otherDetails={otherDetails} suggestions={suggestions} font={font} color={color} />
+                  </div>
+                )
+              }
+            </div>
           </div>
         </div>
 
