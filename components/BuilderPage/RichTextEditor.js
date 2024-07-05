@@ -7,11 +7,13 @@ import cn from 'classnames'
 import { useEffect, useState } from 'react';
 const MenuBar = ({content})=>{
   const {editor} = useCurrentEditor()
-  if(!editor)
-    return null;
   useEffect(()=>{
     editor?.commands.setContent(content)
   },[editor, content])
+  if(!editor)
+    return null;
+  
+ 
   return (
     <>
     <div className='flex gap-1 mb-1 mt-[-.6rem] justify-start items-center'>
