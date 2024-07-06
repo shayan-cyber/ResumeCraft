@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "ResumeData" ALTER COLUMN "user_id" SET DATA TYPE VARCHAR(255);

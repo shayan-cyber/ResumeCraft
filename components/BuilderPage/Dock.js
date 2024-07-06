@@ -1,5 +1,5 @@
 import { TABS } from '@/constants';
-import React from 'react'
+import React, { useEffect } from 'react'
 import { IoMdInformationCircle } from "react-icons/io";
 import { BsSuitcaseLgFill } from "react-icons/bs";
 import { HiDocumentDuplicate } from "react-icons/hi2";
@@ -9,7 +9,21 @@ import { FaChartPie } from "react-icons/fa";
 import { LuCode2 } from "react-icons/lu";
 import { GrHomeRounded } from "react-icons/gr";
 import Link from 'next/link';
+import { PiSignInBold } from "react-icons/pi";
+import { useAuth } from "@clerk/nextjs";
+import { SignInButton, SignedIn, SignedOut, UserButton, SignOutButton } from '@clerk/nextjs'
+// import clerkC
 function Dock({ tab, setTab }) {
+     const { isLoaded, userId, sessionId, getToken } = useAuth();
+
+     useEffect(() => {
+          if (!sessionId)
+               return
+               getToken().then((res) => {
+               console.log({ res });
+               console.log({sessionId});
+          })
+     }, [sessionId])
      return (
           <div className='h-screen bg-white shadow-md'>
                <div className='flex flex-col justify-between items-center h-screen py-2'>
@@ -38,6 +52,18 @@ function Dock({ tab, setTab }) {
                               <LuCode2 className='text-2xl' />
                          </div>
 
+                    </div>
+                    <div className='mb-2'>
+                         <SignedIn>
+                              <UserButton />
+                         </SignedIn>
+                         <SignedOut>
+                              <SignInButton>
+                                   <div className={`flex justify-center items-center rounded-full p-2 cursor-pointer hover:bg-purple-200`} >
+                                        <PiSignInBold className='text-2xl' />
+                                   </div>
+                              </SignInButton>
+                         </SignedOut>
                     </div>
                     <div className=''>
                          <Link href={"/"}>

@@ -1,0 +1,75 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model ResumeData {
+  id                Int                @id @default(autoincrement())
+  resume_id         Int
+  user_id           String             @db.VarChar(255)
+  basic_details     BasicDetails?
+  work_details      WorkDetails[]
+  education_details EducationDetails[]
+  skills_details    String[]
+  project_details   ProjectDetails[]
+  other_details     String[]
+}
+
+model BasicDetails {
+  id             Int        @id @default(autoincrement())
+  resume_data    ResumeData @relation(fields: [resume_data_id], references: [id])
+  resume_data_id Int        @unique
+  name           String     @db.VarChar(255)
+  title          String     @db.VarChar(255)
+  linkedin_link  String?    @db.VarChar(255)
+  github_link    String?    @db.VarChar(255)
+  other          String?    @db.VarChar(255)
+  email          String     @db.VarChar(255)
+  phone          String     @db.VarChar(255)
+}
+
+model WorkDetails {
+  id             Int        @id @default(autoincrement())
+  title          String     @db.VarChar(255)
+  company_name   String     @db.VarChar(255)
+  location       String?    @db.VarChar(255)
+  start_date     DateTime?
+  end_date       DateTime?
+  description    String     @db.Text
+  resume_data_id Int
+  resume_data    ResumeData @relation(fields: [resume_data_id], references: [id])
+}
+
+model EducationDetails {
+  id             Int        @id @default(autoincrement())
+  name           String     @db.VarChar(255)
+  level          String     @db.VarChar(255)
+  area_of_study  String?    @db.VarChar(255)
+  start_date     DateTime?
+  end_date       DateTime?
+  result         String     @db.VarChar(255)
+  resume_data_id Int
+  resume_data    ResumeData @relation(fields: [resume_data_id], references: [id])
+}
+
+model ProjectDetails {
+  id             Int        @id @default(autoincrement())
+  name           String     @db.VarChar(255)
+  tech_stack     String     @db.VarChar(255)
+  link           String     @db.VarChar(255)
+  start_date     DateTime?
+  end_date       DateTime?
+  description    String     @db.Text
+  resume_data_id Int
+  resume_data    ResumeData @relation(fields: [resume_data_id], references: [id])
+}
