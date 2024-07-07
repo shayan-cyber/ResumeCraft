@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useEffect, useCallback } from 'react'
 import BasicInfo from './FormSections/BasicInfo'
 import ResumeShowCase from './ResumeShowCase';
 import WorkExperienceInfo from './FormSections/WorkExperienceInfo';
@@ -20,14 +20,19 @@ import { FaPaintbrush } from "react-icons/fa6";
 import { RxFontFamily } from "react-icons/rx";
 import { FaEye } from "react-icons/fa";
 import { useAuth } from '@clerk/nextjs';
-function BuilderForm({ tab, isLoading, setIsLoading }) {
+import { RiLoader2Fill } from 'react-icons/ri';
+import { IoIosSave } from 'react-icons/io';
+import { debounce, isString } from 'lodash';
+function BuilderForm({ tab, isLoading, setIsLoading, resumeData }) {
+
+  // console.log({ resumeData });
   const componentRef = useRef();
   const handlePrint = useReactToPrint({
     content: () => componentRef.current,
   });
 
-  const { isLoaded, getToken } = useAuth()
-  const [basicDetails, setBasicDetails] = useState({
+  const { isLoaded, getToken, isSignedIn, sessionId } = useAuth()
+  const [basicDetails, setBasicDetails] = useState(resumeData && resumeData?.basic_details ? resumeData?.basic_details : {
     name: "John Doe",
     title: "Frontend Developer",
     linkedin_link: "https://www.linkedin.com/",
@@ -36,11 +41,12 @@ function BuilderForm({ tab, isLoading, setIsLoading }) {
     email: "abc@gmail.com",
     phone: "+111234567890",
   })
-  const [WorkDetails, setWorkDetails] = useState([])
-  const [educationDetails, setEducationDetails] = useState([])
-  const [projectDetails, setProjectDetails] = useState([])
-  const [skillsDetails, setSkillsDetails] = useState([])
-  const [otherDetails, setOtherDetails] = useState([])
+  const [resumeDataID, setResumeDateID] = useState(resumeData && resumeData?.id ? resumeData?.id : null)
+  const [WorkDetails, setWorkDetails] = useState(resumeData && resumeData?.work_details.length > 0 ? resumeData?.work_details : [])
+  const [educationDetails, setEducationDetails] = useState(resumeData && resumeData?.education_details.length > 0 ? resumeData?.education_details : [])
+  const [projectDetails, setProjectDetails] = useState(resumeData && resumeData?.project_details.length > 0 ? resumeData?.project_details : [])
+  const [skillsDetails, setSkillsDetails] = useState(resumeData && resumeData?.skills_details.length > 0 ? resumeData?.skills_details : [])
+  const [otherDetails, setOtherDetails] = useState(resumeData && resumeData?.other_details.length > 0 ? resumeData?.other_details : [])
   const [openModal, setOpenModal] = useState(false);
   // const [loading, setLoading] = useState(false)
   const [jobDescription, setJobDescription] = useState("")
@@ -52,7 +58,7 @@ function BuilderForm({ tab, isLoading, setIsLoading }) {
     skills: "",
   })
   const [openToolBar, setOpenToolBar] = useState(false)
-
+  const isInitialRender = useRef(true);
   const [color, setColor] = useState("indigo-600")
   const [font, setFont] = useState("roboto")
   const [preview, setPreview] = useState(false)
@@ -68,8 +74,65 @@ function BuilderForm({ tab, isLoading, setIsLoading }) {
 
     // <LatexEditor latexCode={latexCode} setLatexCode={setLatexCode} />
   }
-  console.log(projectDetails);
 
+  const removeID = (resumeData)=>{
+    let basic_details = resumeData?.basic_details;
+    const {id, resume_data_id, ...trimmed_basic_details} = basic_details;
+    console.log({trimmed_basic_details});
+  
+    console.log({trimmed_basic_details});
+    let work_details = resumeData?.work_details;
+    work_details = work_details?.map((item)=>{
+      const {id, resume_data_id, ...trimmed_work_detail} = item;
+      return trimmed_work_detail;
+    })
+    
+    let education_details = resumeData?.education_details;
+    education_details = education_details?.map((item)=>{
+      const {id, resume_data_id, ...trimmed_education_detail} = item;
+      return trimmed_education_detail;
+    })
+  
+    let project_details = resumeData?.project_details;
+    project_details = project_details?.map((item)=>{
+      const {id, resume_data_id, ...trimmed_project_detail} = item;
+      return trimmed_project_detail;
+    })
+
+    let skills_details = resumeData?.skills_details;
+    skills_details = skills_details?.map((item)=>{
+      if(isString(item)){
+        return item;
+      }else{
+        const {text} = item;
+        return  text;
+      }
+    })
+
+    let other_details = resumeData?.other_details;
+    other_details = other_details?.map((item)=>{
+      if(isString(item)){
+        return item;
+      }else{
+        const {description} = item;
+        return description
+      }
+    })
+  
+    let trimmed_resume_data = {
+      basic_details:trimmed_basic_details,
+      work_details:work_details,
+      education_details:education_details,
+      project_details:project_details,
+      skills_details:skills_details,
+      id:resumeData?.id,
+      resume_id:1,
+      other_details:other_details,
+      user_id:resumeData?.user_id
+    }
+    console.log({trimmed_resume_data});
+    return trimmed_resume_data;
+  }
 
   const buildResumeDescription = (resumeDescription) => {
     let description = `
@@ -113,10 +176,7 @@ function BuilderForm({ tab, isLoading, setIsLoading }) {
   const genSuggestions = () => {
     if (isLoading)
       return
-
-
     setIsLoading(true)
-
     axios.post("/api/gemini/suggestions", {
       resumeDescription: buildResumeDescription(),
       title: basicDetails?.title
@@ -137,46 +197,70 @@ function BuilderForm({ tab, isLoading, setIsLoading }) {
         setIsLoading(false)
       })
   }
+  // console.log({ basicDetails });
 
-  console.log({ suggestions });
 
-  const handleSave = () => {
-    console.log({ isLoaded });
-    if (!isLoaded)
-      return
+  const handleSave = async (basicDetails, WorkDetails, educationDetails, projectDetails, skillsDetails, otherDetails) => {
+
     if (isSaving)
       return
-    console.log({ educationDetails });
-    if (WorkDetails.length === 0 && educationDetails.length === 0 && projectDetails.length === 0 && skillsDetails.length === 0) {
-      console.log({ educationDetails });
-      return
-    }
+
+    // if (WorkDetails.length === 0 && educationDetails.length === 0 && projectDetails.length === 0 && skillsDetails.length === 0) {
+    //   return
+    // }
     setIsSaving(true)
-    getToken().then((token) => {
-      axios.post("/api/resumedata/post_resume_data", {
-        resumeData: {
-          resume_id: 1,
-          basic_details: basicDetails,
-          work_details: WorkDetails.length == 0 ? [] : WorkDetails,
-          education_details: educationDetails.length == 0 ? [] : educationDetails,
-          skills_details: skillsDetails,
-          project_details: projectDetails.length == 0 ? [] : projectDetails,
-          other_details: otherDetails
-        }
-      }, { headers: { "Authorization": `Bearer ${token}` }, }).then((res) => {
-        console.log({ res });
-        setIsSaving(false)
-        // setOpenModal(false)
+    const token = await getToken();
+    if (!token)
+      return;
+    console.log("save : ", { basicDetails });
+    try {
+      let resumeData =  {
+        resume_id: 1,
+        basic_details: basicDetails,
+        work_details: WorkDetails.length == 0 ? [] : WorkDetails,
+        education_details: educationDetails.length == 0 ? [] : educationDetails,
+        skills_details: skillsDetails,
+        project_details: projectDetails.length == 0 ? [] : projectDetails,
+        other_details: otherDetails
+      }
+      let promise = axios.post("/api/resumedata/post_resume_data", {resumeData:removeID(resumeData)}, { headers: { "Authorization": `Bearer ${token}` }, });
 
-      })
+      toast.promise(promise, {
+        loading: 'Saving...',
+        success: (data) => {
+          return `Saved `;
+        },
+        error: 'Error',
+      });
+      const res = await promise;
+      // console.log({ res });
 
-    })
-      .catch((e) => {
-        console.log(e);
-        setIsSaving(false)
-      })
+
+
+      setIsSaving(false)
+    } catch (e) {
+      console.log({ e });
+    }
+
 
   }
+
+  const saveData = useCallback(
+    debounce(async (basicDetails, WorkDetails, educationDetails, projectDetails, skillsDetails, otherDetails) => {
+      console.log({ basicDetails });
+      await handleSave(basicDetails, WorkDetails, educationDetails, projectDetails, skillsDetails, otherDetails)
+    }, 2000), // 500ms debounce
+    []
+  );
+
+  useEffect(() => {
+
+    if (isInitialRender.current) {
+      isInitialRender.current = false;
+      return; // Do nothing on initial render
+    }
+    saveData(basicDetails, WorkDetails, educationDetails, projectDetails, skillsDetails, otherDetails)
+  }, [saveData, basicDetails, WorkDetails, educationDetails, projectDetails, skillsDetails, otherDetails])
 
   return (
     <div className='relative'>
@@ -257,10 +341,22 @@ function BuilderForm({ tab, isLoading, setIsLoading }) {
                   <h1>Download / Print</h1>
                   <MdOutlineFileDownload className='text-xl' />
                 </button>
-                <button className='add-btn' onClick={() => {
-                  handleSave()
+                <button className='add-btn flex gap-2 justify-center items-center disabled:opacity-40' disabled={isSaving} onClick={() => {
+                  handleSave(basicDetails, WorkDetails, educationDetails, projectDetails, skillsDetails, otherDetails)
+                  // toast.promise(promise, {
+                  //   loading: 'Saving...',
+                  //   success: (data) => {
+                  //     return `Saved `;
+                  //   },
+                  //   error: 'Error',
+                  // });
                 }}>
                   Save
+                  {
+                    isSaving ? (<RiLoader2Fill className='text-xl animate-spin' />) : (
+                      <IoIosSave className='text-xl' />
+                    )
+                  }
                 </button>
 
               </div>

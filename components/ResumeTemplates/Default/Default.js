@@ -1,19 +1,28 @@
 import Link from 'next/link';
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { FaGithub, FaLinkedinIn } from "react-icons/fa";
 import { IoIosCall } from "react-icons/io";
 import { FaExternalLinkAlt } from "react-icons/fa";
 import { sampleData } from '@/constants';
 import { PiWarningCircleFill } from "react-icons/pi";
-import DOMPurify from 'dompurify'
+// import DOMPurify from 'dompurify'
 import SuggestionCard from '../../BuilderPage/SuggestionCard';
+import DOMPurify from "isomorphic-dompurify";
 const Default = ({ basicDetails, WorkDetails, educationDetails, projectDetails, skillsDetails, otherDetails, suggestions, font, color }) => {
 
-
-  console.log({ basicDetails });
+  const [isMounted, setIsMounted] = useState(false);
+  // console.log({ basicDetails });
   const [openExpSuggestion, setOpenExpSuggestion] = useState(false)
   const [openProjectSuggestion, setOpenProjectSuggestion] = useState(false)
   const [openSkillsSuggestion, setOpenSkillsSuggestion] = useState(false);
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  if (!isMounted) {
+    return null;
+  }
+ 
   return (
 
     <div className={suggestions?.experience || suggestions?.project || suggestions?.skills ? `w-full p-6 shadow-md border-[2px] border-yellow-400 relative ${font}` : `w-full p-6 shadow-md border-2 relative bg-white ${font}`} >

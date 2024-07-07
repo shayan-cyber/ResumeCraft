@@ -18,6 +18,7 @@ function Skills({skillsDetails, setSkillsDetails}) {
     const handleAddition = (skill) => {
       setSkills([...skills, skill]);
     };
+    console.log({skills});
     return (
       <>
       <label className='mb-4'>

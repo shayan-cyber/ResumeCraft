@@ -8,7 +8,7 @@ export default async function (req, res) {
                 return res.status(401).json({ error: "Unauthorized" });
             }
             const { resumeData } = req.body;
-            // console.log({resumeData});
+            console.log({resumeData});
 
             const user = await clerkClient().users.getUser(userId);
             let data = await prisma.resumeData.findMany({
@@ -16,7 +16,7 @@ export default async function (req, res) {
                     user_id: userId
                 }
             })
-            console.log({data});
+            // console.log({data});
 
 
             if (data.length > 0) {
@@ -47,7 +47,7 @@ export default async function (req, res) {
 
                     }
                 })
-                console.log({ data });
+                // console.log({ data });
             } else {
 
 

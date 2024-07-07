@@ -13,7 +13,7 @@ const ResumeShowCase = ({ template_name, basicDetails, WorkDetails, educationDet
     default: <Default basicDetails={basicDetails} WorkDetails={WorkDetails} educationDetails={educationDetails} projectDetails={projectDetails} skillsDetails={skillsDetails} otherDetails={otherDetails} suggestions={suggestions} font={font} color={color} />,
   }
 
-  console.log({ basicDetails });
+  // console.log({ basicDetails });
 
   const template = searchParams.get('template')
   let selectedTemplate = switcher[template]

@@ -4,11 +4,11 @@ import Dock from './Dock'
 import { TABS } from '@/constants'
 import { RiOpenaiLine } from "react-icons/ri";
 
-function BuilderPage() {
+function BuilderPage({resumeData}) {
 
   const [tab, setTab] = useState(TABS.BASIC_INFO)
   const [isLoading, setIsLoading] = useState(false)
-
+  console.log({resumeData});
   return (
     <div className='relative '>
 
@@ -29,7 +29,7 @@ function BuilderPage() {
         </div>
 
         <div className="fill">
-          <BuilderForm tab={tab} isLoading={isLoading} setIsLoading={setIsLoading} />
+          <BuilderForm tab={tab} isLoading={isLoading} setIsLoading={setIsLoading} resumeData={resumeData} />
         </div>
 
       </div>

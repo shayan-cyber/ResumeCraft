@@ -14,16 +14,9 @@ import { useAuth } from "@clerk/nextjs";
 import { SignInButton, SignedIn, SignedOut, UserButton, SignOutButton } from '@clerk/nextjs'
 // import clerkC
 function Dock({ tab, setTab }) {
-     const { isLoaded, userId, sessionId, getToken } = useAuth();
+     // const { isLoaded, userId, sessionId, getToken } = useAuth();
 
-     useEffect(() => {
-          if (!sessionId)
-               return
-               getToken().then((res) => {
-               console.log({ res });
-               console.log({sessionId});
-          })
-     }, [sessionId])
+     
      return (
           <div className='h-screen bg-white shadow-md'>
                <div className='flex flex-col justify-between items-center h-screen py-2'>
