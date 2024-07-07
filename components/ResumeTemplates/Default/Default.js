@@ -43,12 +43,12 @@ const Default = ({ basicDetails, WorkDetails, educationDetails, projectDetails, 
 
       <div className='flex justify-start gap-12 items-center my-2'>
         <div className='flex justify-start items-center'>
-          <Link href={basicDetails.linkedInLink}><p className='text-blue-600' style={{
+          <Link href={basicDetails.linkedin_link}><p className='text-blue-600' style={{
             color: color
           }}><FaLinkedinIn /></p></Link>
         </div>
         <div className='flex justify-start items-center'>
-          <Link href={basicDetails.linkedInLink}><p className='text-blue-600' style={{
+          <Link href={basicDetails.linkedin_link}><p className='text-blue-600' style={{
             color: color
           }}><FaGithub /></p></Link>
         </div>

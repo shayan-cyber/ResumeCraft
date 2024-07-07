@@ -20,16 +20,16 @@ function BasicInfo({basicDetails, setBasicDetails}) {
             </div>
             <div className="mb-2">
                 <label htmlFor='linkedInLink' className="block">LinkedIn Link</label>
-                <input className=' input-form ' id="linkedInLink" name='linkedInLink' value={basicDetails?.linkedInLink} onChange={(e)=>setBasicDetails({
+                <input className=' input-form ' id="linkedInLink" name='linkedInLink' value={basicDetails?.linkedin_link} onChange={(e)=>setBasicDetails({
                     ...basicDetails,
-                    linkedInLink:e.target.value
+                    linkedin_link:e.target.value
                 })} placeholder='https://linkedIn.com/john-doe' />
             </div>
             <div className="mb-2">
                 <label htmlFor='githubLink' className="block">Github Link</label>
-                <input className=' input-form ' id="githubLink" name='githubLink' value={basicDetails?.githubLink} onChange={(e)=>setBasicDetails({
+                <input className=' input-form ' id="githubLink" name='githubLink' value={basicDetails?.github_link} onChange={(e)=>setBasicDetails({
                     ...basicDetails,
-                    githubLink:e.target.value
+                    github_link:e.target.value
                 })} placeholder='https://github.com/john-doe' />
             </div>
             <div className="mb-2">

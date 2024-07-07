@@ -28,10 +28,10 @@ function Dummy() {
 
             <div className='flex justify-start gap-12 items-center my-1 text-[0.6rem]'>
                 <div className='flex justify-start items-center'>
-                    <div href={sampleData?.basicDetails.linkedInLink}><p className='text-blue-600'><FaLinkedinIn /></p></div>
+                    <div href={sampleData?.basicDetails.linkedin_link}><p className='text-blue-600'><FaLinkedinIn /></p></div>
                 </div>
                 <div className='flex justify-start items-center'>
-                    <div href={sampleData?.basicDetails.linkedInLink}><p className='text-blue-600'><FaGithub /></p></div>
+                    <div href={sampleData?.basicDetails.github_link}><p className='text-blue-600'><FaGithub /></p></div>
                 </div>
             </div>
 

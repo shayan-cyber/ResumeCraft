@@ -13,8 +13,8 @@ export const sampleData = {
     basicDetails: {
         name: "John Doe",
         title: "Frontend Developer",
-        linkedInLink: "https://www.linkedin.com/",
-        githubLink: "https://github.com/",
+        linkedin_link: "https://www.linkedin.com/",
+        github_link: "https://github.com/",
         other: "",
         email: "abc@gmail.com",
         phone: "+111234567890",

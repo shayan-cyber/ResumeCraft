@@ -43,8 +43,8 @@ model WorkDetails {
   title          String     @db.VarChar(255)
   company_name   String     @db.VarChar(255)
   location       String?    @db.VarChar(255)
-  start_date     DateTime?
-  end_date       DateTime?
+  start_date     String?
+  end_date       String?
   description    String     @db.Text
   resume_data_id Int
   resume_data    ResumeData @relation(fields: [resume_data_id], references: [id])
@@ -55,8 +55,8 @@ model EducationDetails {
   name           String     @db.VarChar(255)
   level          String     @db.VarChar(255)
   area_of_study  String?    @db.VarChar(255)
-  start_date     DateTime?
-  end_date       DateTime?
+  start_date     String?
+  end_date       String?
   result         String     @db.VarChar(255)
   resume_data_id Int
   resume_data    ResumeData @relation(fields: [resume_data_id], references: [id])
@@ -67,8 +67,8 @@ model ProjectDetails {
   name           String     @db.VarChar(255)
   tech_stack     String     @db.VarChar(255)
   link           String     @db.VarChar(255)
-  start_date     DateTime?
-  end_date       DateTime?
+  start_date     String?
+  end_date       String?
   description    String     @db.Text
   resume_data_id Int
   resume_data    ResumeData @relation(fields: [resume_data_id], references: [id])

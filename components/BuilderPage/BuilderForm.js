@@ -19,16 +19,19 @@ import { toast } from 'sonner';
 import { FaPaintbrush } from "react-icons/fa6";
 import { RxFontFamily } from "react-icons/rx";
 import { FaEye } from "react-icons/fa";
+import { useAuth } from '@clerk/nextjs';
 function BuilderForm({ tab, isLoading, setIsLoading }) {
   const componentRef = useRef();
   const handlePrint = useReactToPrint({
     content: () => componentRef.current,
   });
+
+  const { isLoaded, getToken } = useAuth()
   const [basicDetails, setBasicDetails] = useState({
     name: "John Doe",
     title: "Frontend Developer",
-    linkedInLink: "https://www.linkedin.com/",
-    githubLink: "https://github.com/",
+    linkedin_link: "https://www.linkedin.com/",
+    github_link: "https://github.com/",
     other: "",
     email: "abc@gmail.com",
     phone: "+111234567890",
@@ -53,6 +56,7 @@ function BuilderForm({ tab, isLoading, setIsLoading }) {
   const [color, setColor] = useState("indigo-600")
   const [font, setFont] = useState("roboto")
   const [preview, setPreview] = useState(false)
+  const [isSaving, setIsSaving] = useState(false)
   const form_sections = {
     BASIC_INFO: <BasicInfo basicDetails={basicDetails} setBasicDetails={setBasicDetails} />,
     WORK_EXPERIENCE: <WorkExperienceInfo WorkDetails={WorkDetails} setWorkDetails={setWorkDetails} />,
@@ -135,11 +139,44 @@ function BuilderForm({ tab, isLoading, setIsLoading }) {
   }
 
   console.log({ suggestions });
-  // const ModalChildren = () => {
-  //   return (
 
-  //   )
-  // }
+  const handleSave = () => {
+    console.log({ isLoaded });
+    if (!isLoaded)
+      return
+    if (isSaving)
+      return
+    console.log({ educationDetails });
+    if (WorkDetails.length === 0 && educationDetails.length === 0 && projectDetails.length === 0 && skillsDetails.length === 0) {
+      console.log({ educationDetails });
+      return
+    }
+    setIsSaving(true)
+    getToken().then((token) => {
+      axios.post("/api/resumedata/post_resume_data", {
+        resumeData: {
+          resume_id: 1,
+          basic_details: basicDetails,
+          work_details: WorkDetails.length == 0 ? [] : WorkDetails,
+          education_details: educationDetails.length == 0 ? [] : educationDetails,
+          skills_details: skillsDetails,
+          project_details: projectDetails.length == 0 ? [] : projectDetails,
+          other_details: otherDetails
+        }
+      }, { headers: { "Authorization": `Bearer ${token}` }, }).then((res) => {
+        console.log({ res });
+        setIsSaving(false)
+        // setOpenModal(false)
+
+      })
+
+    })
+      .catch((e) => {
+        console.log(e);
+        setIsSaving(false)
+      })
+
+  }
 
   return (
     <div className='relative'>
@@ -215,10 +252,18 @@ function BuilderForm({ tab, isLoading, setIsLoading }) {
 
             <div className='flex justify-between my-2 items-center relative'>
 
-              <button className='flex justify-center items-center gap-2 add-btn' onClick={handlePrint}>
-                <h1>Download / Print</h1>
-                <MdOutlineFileDownload className='text-xl' />
-              </button>
+              <div className='flex  gap-2'>
+                <button className='flex justify-center items-center gap-2 add-btn' onClick={handlePrint}>
+                  <h1>Download / Print</h1>
+                  <MdOutlineFileDownload className='text-xl' />
+                </button>
+                <button className='add-btn' onClick={() => {
+                  handleSave()
+                }}>
+                  Save
+                </button>
+
+              </div>
 
               <button className='p-2 rounded-full text-white bg-black text-lg hover:scale-105' onClick={() => setOpenToolBar(!openToolBar)}>
 
