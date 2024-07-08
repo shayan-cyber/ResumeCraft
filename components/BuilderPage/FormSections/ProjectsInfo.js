@@ -203,7 +203,7 @@ function ProjectsInfo({ projectDetails, setProjectDetails }) {
                 ) : (
 
                     <button className='add-btn' onClick={() => {
-                        if (singleProjectDetails?.name === "" || singleProjectDetails?.description === "") {
+                        if (singleProjectDetails?.name === "" || singleProjectDetails?.description === "" || singleProjectDetails?.tech_stack === "") {
 
                             toast.error("Incomplete details")
                             return

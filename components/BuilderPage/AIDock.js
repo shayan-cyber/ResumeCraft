@@ -3,6 +3,7 @@ import { RiBrainLine } from "react-icons/ri";
 import { ImStatsDots } from "react-icons/im";
 import { RiOpenaiLine } from "react-icons/ri";
 import { TbMessageChatbot } from "react-icons/tb";
+import ToolTip from '../ToolTip';
 function AIDock({ setATSModalOpen, genSuggestions, isLoading, setIsLoading }) {
     const [open, setOpen] = useState(false)
     return (
@@ -11,14 +12,17 @@ function AIDock({ setATSModalOpen, genSuggestions, isLoading, setIsLoading }) {
             {
                 open && (
                     <>
-                        <div className='rounded-full p-2 bg-purple-500 text-white text-xl  cursor-pointer' onClick={()=> setATSModalOpen(true)}>
+                        <div className='rounded-full relative group p-2 bg-purple-500 text-white text-xl  cursor-pointer' onClick={()=> setATSModalOpen(true)}>
                             <ImStatsDots />
+                            <ToolTip position={"right-10 bottom-2  w-[100px] text-end"} text={"Resume Score"} />
                         </div>
-                        <div className='rounded-full p-2 bg-purple-500 text-white text-xl font-bold cursor-pointer' onClick={()=> genSuggestions()}>
+                        <div className='rounded-full relative group p-2 bg-purple-500 text-white text-xl font-bold cursor-pointer' onClick={()=> genSuggestions()}>
                             <RiOpenaiLine />
+                            <ToolTip position={"right-10 bottom-2  w-[110px] text-end"} text={"AI Suggestions"} />
                         </div>
-                        <div className='rounded-full p-2 bg-purple-500 text-white text-xl font-bold cursor-pointer'>
+                        <div className='rounded-full relative group p-2 bg-purple-500 text-white text-xl font-bold cursor-pointer'>
                             <TbMessageChatbot />
+                            <ToolTip position={"right-10 bottom-2 w-[60px] text-end"} text={"AI Chat"} />
                         </div>
                     </>
 
@@ -29,11 +33,6 @@ function AIDock({ setATSModalOpen, genSuggestions, isLoading, setIsLoading }) {
                 <RiBrainLine />
 
             </div>
-
-
-
-
-
         </div >
     )
 }

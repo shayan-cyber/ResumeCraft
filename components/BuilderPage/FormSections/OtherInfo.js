@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import Spils from '../Spils'
+import { toast } from 'sonner'
 function OtherInfo({ otherDetails, setOtherDetails }) {
   const [singleOtherDetails, setSingleOtherDetails] = useState({
     description: ""
@@ -76,7 +77,10 @@ function OtherInfo({ otherDetails, setOtherDetails }) {
           ):(
             <button className='add-btn' onClick={() => {
               if(singleOtherDetails?.description == "")
-                return 
+                {
+                  toast.error("Add description!!")
+                  return
+                } 
               setOtherDetails([...otherDetails, {
                 id: otherDetails?.length,
                 ...singleOtherDetails

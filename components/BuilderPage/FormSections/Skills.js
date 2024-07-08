@@ -1,5 +1,6 @@
 import React from 'react'
 import { WithContext as ReactTags } from "react-tag-input";
+import { toast } from 'sonner';
 const KeyCodes = {
     comma: 188,
     enter: 13,
@@ -38,6 +39,8 @@ function Skills({skillsDetails, setSkillsDetails}) {
         />
       </div>
       <button className='add-btn' onClick={()=>{
+        if(skills.length ==0)
+          toast.error("Add a skill first!!")
         setSkillsDetails(skills)
       }} >Save</button>
       </>

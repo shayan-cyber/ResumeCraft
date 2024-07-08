@@ -23,9 +23,9 @@ import { useAuth } from '@clerk/nextjs';
 import { RiLoader2Fill } from 'react-icons/ri';
 import { IoIosSave } from 'react-icons/io';
 import { debounce, isString } from 'lodash';
+import { removeID } from '@/utils/helpers';
 function BuilderForm({ tab, isLoading, setIsLoading, resumeData }) {
 
-  // console.log({ resumeData });
   const componentRef = useRef();
   const handlePrint = useReactToPrint({
     content: () => componentRef.current,
@@ -48,7 +48,6 @@ function BuilderForm({ tab, isLoading, setIsLoading, resumeData }) {
   const [skillsDetails, setSkillsDetails] = useState(resumeData && resumeData?.skills_details.length > 0 ? resumeData?.skills_details : [])
   const [otherDetails, setOtherDetails] = useState(resumeData && resumeData?.other_details.length > 0 ? resumeData?.other_details : [])
   const [openModal, setOpenModal] = useState(false);
-  // const [loading, setLoading] = useState(false)
   const [jobDescription, setJobDescription] = useState("")
   const [atsScore, setAtsScore] = useState(null)
   const [latexCode, setLatexCode] = useState(null)
@@ -75,64 +74,7 @@ function BuilderForm({ tab, isLoading, setIsLoading, resumeData }) {
     // <LatexEditor latexCode={latexCode} setLatexCode={setLatexCode} />
   }
 
-  const removeID = (resumeData)=>{
-    let basic_details = resumeData?.basic_details;
-    const {id, resume_data_id, ...trimmed_basic_details} = basic_details;
-    console.log({trimmed_basic_details});
   
-    console.log({trimmed_basic_details});
-    let work_details = resumeData?.work_details;
-    work_details = work_details?.map((item)=>{
-      const {id, resume_data_id, ...trimmed_work_detail} = item;
-      return trimmed_work_detail;
-    })
-    
-    let education_details = resumeData?.education_details;
-    education_details = education_details?.map((item)=>{
-      const {id, resume_data_id, ...trimmed_education_detail} = item;
-      return trimmed_education_detail;
-    })
-  
-    let project_details = resumeData?.project_details;
-    project_details = project_details?.map((item)=>{
-      const {id, resume_data_id, ...trimmed_project_detail} = item;
-      return trimmed_project_detail;
-    })
-
-    let skills_details = resumeData?.skills_details;
-    skills_details = skills_details?.map((item)=>{
-      if(isString(item)){
-        return item;
-      }else{
-        const {text} = item;
-        return  text;
-      }
-    })
-
-    let other_details = resumeData?.other_details;
-    other_details = other_details?.map((item)=>{
-      if(isString(item)){
-        return item;
-      }else{
-        const {description} = item;
-        return description
-      }
-    })
-  
-    let trimmed_resume_data = {
-      basic_details:trimmed_basic_details,
-      work_details:work_details,
-      education_details:education_details,
-      project_details:project_details,
-      skills_details:skills_details,
-      id:resumeData?.id,
-      resume_id:1,
-      other_details:other_details,
-      user_id:resumeData?.user_id
-    }
-    console.log({trimmed_resume_data});
-    return trimmed_resume_data;
-  }
 
   const buildResumeDescription = (resumeDescription) => {
     let description = `
@@ -183,35 +125,32 @@ function BuilderForm({ tab, isLoading, setIsLoading, resumeData }) {
     }).then((res) => {
       console.log({ res });
       console.log((res?.data?.text))
-      // setAtsScore(JSON.parse(res?.data?.text))
+
       setSuggestions({
         experience: res?.data?.text?.experience ? res?.data?.text?.experience : "",
         project: res?.data?.text?.project ? res?.data?.text?.project : "",
         skills: res?.data?.text?.skills ? res?.data?.text?.skills : "",
       })
       setIsLoading(false)
-      // setOpenModal(false)
+
     })
       .catch((e) => {
         console.log(e);
         setIsLoading(false)
       })
   }
-  // console.log({ basicDetails });
+
 
 
   const handleSave = async (basicDetails, WorkDetails, educationDetails, projectDetails, skillsDetails, otherDetails) => {
-
+    console.log("hello");
     if (isSaving)
       return
-
-    // if (WorkDetails.length === 0 && educationDetails.length === 0 && projectDetails.length === 0 && skillsDetails.length === 0) {
-    //   return
-    // }
-    setIsSaving(true)
     const token = await getToken();
-    if (!token)
+    if (!token){
       return;
+    }
+    setIsSaving(true)
     console.log("save : ", { basicDetails });
     try {
       let resumeData =  {
@@ -233,16 +172,10 @@ function BuilderForm({ tab, isLoading, setIsLoading, resumeData }) {
         error: 'Error',
       });
       const res = await promise;
-      // console.log({ res });
-
-
-
       setIsSaving(false)
     } catch (e) {
-      console.log({ e });
+      console.log(e);
     }
-
-
   }
 
   const saveData = useCallback(
@@ -330,10 +263,6 @@ function BuilderForm({ tab, isLoading, setIsLoading, resumeData }) {
 
             </div>
           )} */}
-
-
-
-
             <div className='flex justify-between my-2 items-center relative'>
 
               <div className='flex  gap-2'>

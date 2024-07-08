@@ -5,7 +5,8 @@ function BasicInfo({basicDetails, setBasicDetails}) {
 
     return (
         <div className='w-full'>
-            <div className="mb-2">
+            <h1 className='text-xl font-[550]'>Basic Details</h1>
+            <div className="mb-2 mt-2">
                 <label htmlFor='name' className="block">Name</label>
                 <input className=' input-form ' id="name" name='name' placeholder='John Doe' value={basicDetails?.name} onChange={(e)=>setBasicDetails({
                     ...basicDetails,
