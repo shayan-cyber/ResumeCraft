@@ -98,3 +98,5 @@ export const COLORS = [
 export const FONTS = [
     "roboto", "openSans"
 ]
+
+export const TEMPLATES =["Default"]

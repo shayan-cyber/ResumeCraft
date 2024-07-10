@@ -2,15 +2,16 @@ import BuilderPage from '@/components/BuilderPage/BuilderPage'
 import React from 'react'
 import axios from 'axios';
 import { getAuth, buildClerkProps } from "@clerk/nextjs/server";
+import { TEMPLATES } from '@/constants';
 
 
 
 
 
-function builder({resumeData}) {
+function builder({ resumeData }) {
   return (
     <div className='bg-warm-grey'>
-      <BuilderPage resumeData={resumeData}  />
+      <BuilderPage resumeData={resumeData} />
     </div>
   )
 }
@@ -18,31 +19,27 @@ function builder({resumeData}) {
 
 
 export const getServerSideProps = async (ctx) => {
+  console.log("here: ", ctx.query.template);
+  const id = ctx.query.id ? ctx.query?.id : null;
   const { userId, getToken } = getAuth(ctx.req);
   console.log({ userId });
-
   let resumeData = null;
-  if (!userId) {
+  if (userId && id) {
 
-
-    // handle user is not signed in.
-  } else {
 
     try {
       const token = await getToken();
-      const res = await axios.get(`${process.env.API_URL}/api/resumedata/get_resume_data`, { headers: { "Authorization": `Bearer ${token}` } });
-       resumeData = res?.data?.resumeData
-      //  trimmed_resumeData = removeID(resumeData);
-      
+      const res = await axios.get(`${process.env.API_URL}/api/resumedata/get_resume_data?id=${id}`, { headers: { "Authorization": `Bearer ${token}` } });
+      resumeData = res?.data?.resumeData
+
     } catch (e) {
       console.log({ e });
     }
 
   }
 
-  // Load any data your application needs for the page using the userId
 
-  return { props: { ...buildClerkProps(ctx.req) , resumeData:resumeData} };
+  return { props: { ...buildClerkProps(ctx.req), resumeData: resumeData } };
 };
 
 export default builder

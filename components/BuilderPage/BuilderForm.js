@@ -25,7 +25,7 @@ import { IoIosSave } from 'react-icons/io';
 import { debounce, isString } from 'lodash';
 import { removeID } from '@/utils/helpers';
 function BuilderForm({ tab, isLoading, setIsLoading, resumeData }) {
-
+  
   const componentRef = useRef();
   const handlePrint = useReactToPrint({
     content: () => componentRef.current,
@@ -153,7 +153,7 @@ function BuilderForm({ tab, isLoading, setIsLoading, resumeData }) {
     setIsSaving(true)
     console.log("save : ", { basicDetails });
     try {
-      let resumeData =  {
+      let resume_data_body =  {
         resume_id: 1,
         basic_details: basicDetails,
         work_details: WorkDetails.length == 0 ? [] : WorkDetails,
@@ -162,7 +162,7 @@ function BuilderForm({ tab, isLoading, setIsLoading, resumeData }) {
         project_details: projectDetails.length == 0 ? [] : projectDetails,
         other_details: otherDetails
       }
-      let promise = axios.post("/api/resumedata/post_resume_data", {resumeData:removeID(resumeData)}, { headers: { "Authorization": `Bearer ${token}` }, });
+      let promise = axios.post(`${resumeData ? `/api/resumedata/post_resume_data?id=${resumeData? resumeData?.id:null}`:`/api/resumedata/post_resume_data`}`, {resumeData:removeID(resume_data_body)}, { headers: { "Authorization": `Bearer ${token}` }, });
 
       toast.promise(promise, {
         loading: 'Saving...',

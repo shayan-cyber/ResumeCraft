@@ -2,16 +2,18 @@ import Navbar from '@/components/HomePage/Navbar'
 import Dummy from '@/components/ResumeTemplates/Default/Dummy';
 import Link from 'next/link';
 import React, { useEffect } from 'react'
-
-function select_template() {
+import { getAuth, buildClerkProps } from "@clerk/nextjs/server";
+import axios from 'axios';
+import { TEMPLATES } from '@/constants';
+function select_template({ savedResumes }) {
     function handleMouseMove(event, cardName) {
         var card = document.querySelector(`.${cardName}`);
         var boundingRect = card.getBoundingClientRect();
-    
+
 
         var mouseX = event.clientX - boundingRect.left - boundingRect.width / 2;
         var mouseY = event.clientY - boundingRect.top - boundingRect.height / 2;
-    
+
 
         var maxTilt = 10;
 
@@ -19,43 +21,69 @@ function select_template() {
         var tiltY = -(mouseX / boundingRect.width) * maxTilt;
 
         card.style.transform = 'perspective(1000px) rotateX(' + tiltX + 'deg) rotateY(' + tiltY + 'deg)';
-      }
+    }
 
-      function handleMouseLeave(e, cardName){
+    function handleMouseLeave(e, cardName) {
         var card = document.querySelector(`.${cardName}`);
         card.style.transform = '';
-      }
+    }
 
     let resumeTemplates = {
-        default:<Dummy/>
+        Default: <Dummy />
     }
     return (
         <div className='bg-warm-grey'>
 
             <Navbar />
-            <div className='px-16 py-10'>
+            <div className='px-16 py-5'>
                 <h1 className='text-3xl'>Select A Template</h1>
                 <div className='grid grid-cols-3 gap-12 my-12'>
 
                     {
-                        Object.keys(resumeTemplates).map((item, key)=>{
+                        Object.keys(resumeTemplates).map((item, key) => {
                             return (
                                 <Link href={`/builder?template=${item}`} key={key}>
-                                    <div className='w-full h-[620px] rounded-2xl shadow-md bg-white card1 cursor-pointer' onMouseMove={(e)=> handleMouseMove(e, "card1")} onMouseLeave={(e)=>{
+                                    <div className='w-full h-[620px] rounded-2xl shadow-md bg-white card1 cursor-pointer' onMouseMove={(e) => handleMouseMove(e, "card1")} onMouseLeave={(e) => {
                                         handleMouseLeave(e, "card1")
                                     }}>
                                         {resumeTemplates[item]}
                                     </div>
                                 </Link>
-                                
+
                             )
                         })
                     }
-                    
+
 
                 </div>
 
             </div>
+
+            {savedResumes && (
+                <div className='px-16 py-5'>
+                    <h1 className='text-3xl'>Your Saved Templates</h1>
+                    <div className='grid grid-cols-3 gap-12 my-12'>
+
+                        {
+                            savedResumes?.map((item, key) => {
+                                return (
+                                    <Link href={`/builder?template=${TEMPLATES[item?.resume_id-1]}&id=${item?.id}`} key={key}>
+                                        <div className='w-full h-[620px] rounded-2xl shadow-md bg-white card2 cursor-pointer' onMouseMove={(e) => handleMouseMove(e, "card2")} onMouseLeave={(e) => {
+                                            handleMouseLeave(e, "card2")
+                                        }}>
+                                            {resumeTemplates[TEMPLATES[item?.resume_id-1]]}
+                                        </div>
+                                    </Link>
+
+                                )
+                            })
+                        }
+
+
+                    </div>
+
+                </div>
+            )}
 
 
 
@@ -64,3 +92,18 @@ function select_template() {
 }
 
 export default select_template
+
+export const getServerSideProps = async (ctx) => {
+
+    const { userId, getToken } = getAuth(ctx.req);
+    let savedResumes = null;
+    if (userId) {
+        const token = await getToken();
+        const res = await axios.get(`${process.env.API_URL}/api/resumedata/get_resume_data`, { headers: { "Authorization": `Bearer ${token}` } });
+        savedResumes = res?.data?.resumeData
+        console.log({ savedResumes });
+
+    }
+    return { props: { ...buildClerkProps(ctx.req), savedResumes: savedResumes } };
+
+}

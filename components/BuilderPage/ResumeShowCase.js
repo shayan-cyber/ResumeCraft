@@ -10,12 +10,13 @@ const ResumeShowCase = ({ template_name, basicDetails, WorkDetails, educationDet
   // const [template, setTemplate] = useState(null)
 
   let switcher = {
-    default: <Default basicDetails={basicDetails} WorkDetails={WorkDetails} educationDetails={educationDetails} projectDetails={projectDetails} skillsDetails={skillsDetails} otherDetails={otherDetails} suggestions={suggestions} font={font} color={color} />,
+    Default: <Default basicDetails={basicDetails} WorkDetails={WorkDetails} educationDetails={educationDetails} projectDetails={projectDetails} skillsDetails={skillsDetails} otherDetails={otherDetails} suggestions={suggestions} font={font} color={color} />,
   }
 
   // console.log({ basicDetails });
 
   const template = searchParams.get('template')
+  console.log({template});
   let selectedTemplate = switcher[template]
   if (template && !selectedTemplate) {
     router.push("/404")
