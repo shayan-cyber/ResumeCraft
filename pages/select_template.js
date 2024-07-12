@@ -29,7 +29,17 @@ function select_template({ savedResumes }) {
     }
 
     let resumeTemplates = {
-        Default: <Dummy />
+        Default: <Dummy data={null}/>
+    }
+
+    const getResumeTemplate = (data, id) =>{
+
+        let templates = {
+            Default: <Dummy data={data} />
+        }
+
+        return templates[TEMPLATES[id]]
+
     }
     return (
         <div className='bg-warm-grey'>
@@ -37,15 +47,13 @@ function select_template({ savedResumes }) {
             <Navbar />
             <div className='px-16 py-5'>
                 <h1 className='text-3xl'>Select A Template</h1>
-                <div className='grid grid-cols-3 gap-12 my-12'>
+                <div className='grid grid-cols-1 lg:grid-cols-3 gap-12 my-12'>
 
                     {
                         Object.keys(resumeTemplates).map((item, key) => {
                             return (
                                 <Link href={`/builder?template=${item}`} key={key}>
-                                    <div className='w-full h-[620px] rounded-2xl shadow-md bg-white card1 cursor-pointer' onMouseMove={(e) => handleMouseMove(e, "card1")} onMouseLeave={(e) => {
-                                        handleMouseLeave(e, "card1")
-                                    }}>
+                                    <div className='w-full h-[620px] rounded-2xl shadow-md bg-white card1 cursor-pointer' >
                                         {resumeTemplates[item]}
                                     </div>
                                 </Link>
@@ -62,16 +70,14 @@ function select_template({ savedResumes }) {
             {savedResumes && (
                 <div className='px-16 py-5'>
                     <h1 className='text-3xl'>Your Saved Templates</h1>
-                    <div className='grid grid-cols-3 gap-12 my-12'>
+                    <div className='grid grid-cols-1 lg:grid-cols-3 gap-12 my-12'>
 
                         {
                             savedResumes?.map((item, key) => {
                                 return (
                                     <Link href={`/builder?template=${TEMPLATES[item?.resume_id-1]}&id=${item?.id}`} key={key}>
-                                        <div className='w-full h-[620px] rounded-2xl shadow-md bg-white card2 cursor-pointer' onMouseMove={(e) => handleMouseMove(e, "card2")} onMouseLeave={(e) => {
-                                            handleMouseLeave(e, "card2")
-                                        }}>
-                                            {resumeTemplates[TEMPLATES[item?.resume_id-1]]}
+                                        <div className='w-full h-[620px] rounded-2xl shadow-md bg-white card2 cursor-pointer ' >
+                                            {getResumeTemplate(item, item?.resume_id-1)}
                                         </div>
                                     </Link>
 

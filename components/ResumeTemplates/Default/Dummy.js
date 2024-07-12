@@ -4,34 +4,47 @@ import { FaGithub, FaLinkedinIn } from "react-icons/fa";
 import { IoIosCall } from "react-icons/io";
 import { FaExternalLinkAlt } from "react-icons/fa";
 import Link from 'next/link';
-function Dummy() {
+function Dummy({data}) {
+    if(data)
+    {
+        data = {
+            ...data,
+            WorkDetails:data?.work_details,
+            educationDetails:data?.education_details,
+            projectDetails:data?.project_details,
+            skillsDetails:data?.skills_details
+        }
+    }
+    let resumeData = data? data : sampleData
+    console.log("here", {resumeData});
+    
     return (
 
         <div className={'w-full p-6 h-full shadow-md relative rounded-2xl'}>
             <div>
 
-                <h1 className='text-xl'>{sampleData?.basicDetails?.name}</h1>
-                <h6 className='text-xs text-blue-600 mt-1'>{sampleData?.basicDetails?.title}</h6>
+                <h1 className='text-xl'>{resumeData?.basicDetails?.name}</h1>
+                <h6 className='text-xs text-blue-600 mt-1'>{resumeData?.basicDetails?.title}</h6>
 
             </div>
             <div className='flex justify-between items-center my-4 text-[0.6rem]'>
                 <div className='flex justify-start items-center'>
                     <p className='text-blue-600'>@</p>
-                    <p className='ml-1'>{sampleData?.basicDetails?.email}</p>
+                    <p className='ml-1'>{resumeData?.basicDetails?.email}</p>
                 </div>
 
                 <div className='flex justify-start items-center'>
                     <p className='text-blue-600'><IoIosCall /></p>
-                    <p className='ml-1'>{sampleData?.basicDetails?.phone}</p>
+                    <p className='ml-1'>{resumeData?.basicDetails?.phone}</p>
                 </div>
             </div>
 
             <div className='flex justify-start gap-12 items-center my-1 text-[0.6rem]'>
                 <div className='flex justify-start items-center'>
-                    <div href={sampleData?.basicDetails.linkedin_link}><p className='text-blue-600'><FaLinkedinIn /></p></div>
+                    <div href={resumeData?.basicDetails?.linkedin_link || ""}><p className='text-blue-600'><FaLinkedinIn /></p></div>
                 </div>
                 <div className='flex justify-start items-center'>
-                    <div href={sampleData?.basicDetails.github_link}><p className='text-blue-600'><FaGithub /></p></div>
+                    <div href={resumeData?.basicDetails?.github_link ||""}><p className='text-blue-600'><FaGithub /></p></div>
                 </div>
             </div>
 
@@ -45,7 +58,7 @@ function Dummy() {
                 <hr className='border-t-2 border-blue-600' />
                 <div className=' my-1'>
 
-                    {(sampleData?.WorkDetails).map((item, key) => {
+                    {(resumeData?.WorkDetails).map((item, key) => {
                         return (
                             <>
                                 <div className='my-2'>
@@ -76,7 +89,7 @@ function Dummy() {
                 <hr className='border-t-2 border-blue-600' />
                 <ul className=' my-1 flex justify-start flex-wrap'>
 
-                    {(sampleData?.skillsDetails).map((item, key) => {
+                    {(resumeData?.skillsDetails).map((item, key) => {
                         return (
                             <>
                                 <li className='mr-2 '>
@@ -91,7 +104,7 @@ function Dummy() {
             <hr className='border-t-2 border-blue-600' />
             <div className=' my-1'>
 
-                {(sampleData?.educationDetails).map((item, key) => {
+                {(resumeData?.educationDetails).map((item, key) => {
                     return (
                         <>
                             <div className='my-1'>
@@ -118,7 +131,7 @@ function Dummy() {
                 <hr className='border-t-2 border-blue-600' />
                 <div className=' my-1'>
 
-                    {(sampleData?.projectDetails).map((item, key) => {
+                    {(resumeData?.projectDetails).map((item, key) => {
                         return (
                             <>
                                 <div className='my-1'>
