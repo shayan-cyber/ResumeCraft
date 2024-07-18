@@ -23,6 +23,7 @@
     "latex.js": "^0.12.6",
     "lodash": "^4.17.21",
     "next": "14.2.4",
+    "nextjs-progressbar": "^0.0.16",
     "prisma": "^5.16.1",
     "prismjs": "^1.29.0",
     "react": "^18",
