@@ -9,6 +9,7 @@ function Dummy({data}) {
     {
         data = {
             ...data,
+            basicDetails:data?.basic_details,
             WorkDetails:data?.work_details,
             educationDetails:data?.education_details,
             projectDetails:data?.project_details,

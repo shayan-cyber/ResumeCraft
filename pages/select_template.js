@@ -6,27 +6,7 @@ import { getAuth, buildClerkProps } from "@clerk/nextjs/server";
 import axios from 'axios';
 import { TEMPLATES } from '@/constants';
 function select_template({ savedResumes }) {
-    function handleMouseMove(event, cardName) {
-        var card = document.querySelector(`.${cardName}`);
-        var boundingRect = card.getBoundingClientRect();
-
-
-        var mouseX = event.clientX - boundingRect.left - boundingRect.width / 2;
-        var mouseY = event.clientY - boundingRect.top - boundingRect.height / 2;
-
-
-        var maxTilt = 10;
-
-        var tiltX = (mouseY / boundingRect.height) * maxTilt;
-        var tiltY = -(mouseX / boundingRect.width) * maxTilt;
-
-        card.style.transform = 'perspective(1000px) rotateX(' + tiltX + 'deg) rotateY(' + tiltY + 'deg)';
-    }
-
-    function handleMouseLeave(e, cardName) {
-        var card = document.querySelector(`.${cardName}`);
-        card.style.transform = '';
-    }
+    console.log({savedResumes});
 
     let resumeTemplates = {
         Default: <Dummy data={null}/>
@@ -103,6 +83,7 @@ export const getServerSideProps = async (ctx) => {
 
     const { userId, getToken } = getAuth(ctx.req);
     let savedResumes = null;
+    console.log({userId});
     if (userId) {
         const token = await getToken();
         const res = await axios.get(`${process.env.API_URL}/api/resumedata/get_resume_data`, { headers: { "Authorization": `Bearer ${token}` } });

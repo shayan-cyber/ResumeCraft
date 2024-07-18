@@ -15,7 +15,7 @@ export default async function (req, res) {
                 const user = await clerkClient().users.getUser(userId);
                 const resumeData = await prisma.resumeData.findFirst({
                     where: {
-                        id:id
+                        id:parseInt(id)
                     },
                     include: {
                         basic_details: true,

@@ -21,7 +21,7 @@ export default async function (req, res) {
 
                 let data = await prisma.resumeData.findUnique({
                     where: {
-                        id: id
+                        id: parseInt(id)
                     }
                 })
                 // console.log({data});
@@ -31,7 +31,7 @@ export default async function (req, res) {
 
                     data = await prisma.resumeData.update({
                         where: {
-                            id: data[0]?.id
+                            id: data?.id
                         },
                         data: {
                             basic_details: {

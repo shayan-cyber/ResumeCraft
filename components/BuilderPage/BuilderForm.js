@@ -359,7 +359,7 @@ function BuilderForm({ tab, isLoading, setIsLoading, resumeData }) {
             <div className='flex justify-center '>
               {
                 latexCode !== null ? <LatexResumeShowCase latexCode={latexCode} /> : (
-                  <div ref={componentRef}>
+                  <div className='w-full' ref={componentRef}>
                     <ResumeShowCase template_name={"default"} basicDetails={basicDetails} WorkDetails={WorkDetails} educationDetails={educationDetails} projectDetails={projectDetails} skillsDetails={skillsDetails} otherDetails={otherDetails} suggestions={suggestions} font={font} color={color} />
                   </div>
                 )
