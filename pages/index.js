@@ -4,6 +4,7 @@ import Hero from "@/components/HomePage/Hero";
 import Navbar from "@/components/HomePage/Navbar";
 import { GoArrowRight } from "react-icons/go";
 import ShowCase from "@/components/HomePage/ShowCase";
+import Features from "@/components/HomePage/Features";
 // const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
@@ -32,25 +33,18 @@ export default function Home() {
         <Navbar />
         <Hero />
         <div className="flex justify-center gap-4 items-center pb-4">
-
           <button className='bg-black text-xl delay-75 hover:scale-105 font-[550] border-2 text-white p-2 px-4 rounded-lg flex justify-center items-center gap-2'>
-
             <p>Build Now</p>
-
             <GoArrowRight className='text-xl' />
-
           </button>
           <button className='bg-white text-xl delay-75 hover:scale-105 font-[550] text-black border-black border-2 p-2 px-4 rounded-lg flex justify-center items-center gap-2'>
-
             <p>Sign Up</p>
-
-           
-
           </button>
 
         </div>
 
         <ShowCase/>
+        <Features/>
       </div>
 
     </>

@@ -11,7 +11,6 @@ export default async function (req, res) {
                 if (!userId) {
                     return res.status(401).json({ error: "Unauthorized" });
                 }
-
                 const user = await clerkClient().users.getUser(userId);
                 const resumeData = await prisma.resumeData.findFirst({
                     where: {
