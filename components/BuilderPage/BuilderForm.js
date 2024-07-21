@@ -268,7 +268,7 @@ function BuilderForm({ tab, isLoading, setIsLoading, resumeData }) {
                   <MdOutlineFileDownload className='text-xl' />
                 </button>
                 <button className='add-btn flex gap-2 justify-center items-center disabled:opacity-40' disabled={isSaving} onClick={() => {
-                  handleSave(basicDetails, WorkDetails, educationDetails, projectDetails, skillsDetails, otherDetails)
+                  handleSave(basicDetails, WorkDetails, educationDetails, projectDetails, skillsDetails, otherDetails,resumeDataID)
 
                 }}>
                   Save
