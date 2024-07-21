@@ -42,7 +42,7 @@ function BuilderForm({ tab, isLoading, setIsLoading, resumeData }) {
     email: "abc@gmail.com",
     phone: "+111234567890",
   })
-  const [resumeDataID, setResumeDateID] = useState(resumeData && resumeData?.id ? resumeData?.id : null)
+  const [resumeDataID, setResumeDataID] = useState(resumeData && resumeData?.id ? resumeData?.id : null)
   const [WorkDetails, setWorkDetails] = useState(resumeData && resumeData?.work_details.length > 0 ? resumeData?.work_details : [])
   const [educationDetails, setEducationDetails] = useState(resumeData && resumeData?.education_details.length > 0 ? resumeData?.education_details : [])
   const [projectDetails, setProjectDetails] = useState(resumeData && resumeData?.project_details.length > 0 ? resumeData?.project_details : [])
@@ -143,7 +143,7 @@ function BuilderForm({ tab, isLoading, setIsLoading, resumeData }) {
 
 
 
-  const handleSave = async (basicDetails, WorkDetails, educationDetails, projectDetails, skillsDetails, otherDetails) => {
+  const handleSave = async (basicDetails, WorkDetails, educationDetails, projectDetails, skillsDetails, otherDetails, id) => {
     console.log("hello");
     if (isSaving)
       return
@@ -152,7 +152,7 @@ function BuilderForm({ tab, isLoading, setIsLoading, resumeData }) {
       return;
     }
     setIsSaving(true)
-    console.log("save : ", { basicDetails });
+    console.log("save : ", { resumeDataID });
     try {
       let resume_data_body = {
         resume_id: 1,
@@ -163,7 +163,7 @@ function BuilderForm({ tab, isLoading, setIsLoading, resumeData }) {
         project_details: projectDetails.length == 0 ? [] : projectDetails,
         other_details: otherDetails
       }
-      let promise = axios.post(`${resumeData ? `/api/resumedata/post_resume_data?id=${resumeData ? resumeData?.id : null}` : `/api/resumedata/post_resume_data`}`, { resumeData: removeID(resume_data_body) }, { headers: { "Authorization": `Bearer ${token}` }, });
+      let promise = axios.post(`${id ? `/api/resumedata/post_resume_data?id=${id}` : `/api/resumedata/post_resume_data`}`, { resumeData: removeID(resume_data_body) }, { headers: { "Authorization": `Bearer ${token}` }, });
 
       toast.promise(promise, {
         loading: 'Saving...',
@@ -173,6 +173,8 @@ function BuilderForm({ tab, isLoading, setIsLoading, resumeData }) {
         error: 'Error',
       });
       const res = await promise;
+      console.log("saving resume ID", { res }); 
+      setResumeDataID(res?.data?.resumeData?.id)
       setIsSaving(false)
     } catch (e) {
       console.log(e);
@@ -180,9 +182,9 @@ function BuilderForm({ tab, isLoading, setIsLoading, resumeData }) {
   }
 
   const saveData = useCallback(
-    debounce(async (basicDetails, WorkDetails, educationDetails, projectDetails, skillsDetails, otherDetails) => {
+    debounce(async (basicDetails, WorkDetails, educationDetails, projectDetails, skillsDetails, otherDetails, id) => {
       console.log({ basicDetails });
-      await handleSave(basicDetails, WorkDetails, educationDetails, projectDetails, skillsDetails, otherDetails)
+      await handleSave(basicDetails, WorkDetails, educationDetails, projectDetails, skillsDetails, otherDetails, id)
     }, 2000), // 500ms debounce
     []
   );
@@ -193,7 +195,7 @@ function BuilderForm({ tab, isLoading, setIsLoading, resumeData }) {
       isInitialRender.current = false;
       return; // Do nothing on initial render
     }
-    saveData(basicDetails, WorkDetails, educationDetails, projectDetails, skillsDetails, otherDetails)
+    saveData(basicDetails, WorkDetails, educationDetails, projectDetails, skillsDetails, otherDetails, resumeDataID)
   }, [saveData, basicDetails, WorkDetails, educationDetails, projectDetails, skillsDetails, otherDetails])
 
   return (
@@ -347,10 +349,14 @@ function BuilderForm({ tab, isLoading, setIsLoading, resumeData }) {
 
             <div className='flex justify-center relative'>
               {
-                suggestions&& (
+                suggestions.experience !== "" && suggestions.project !== "" && suggestions.skills !== "" && (
                   <div className='absolute top-2 right-2 z-10 p-1 rounded-lg'>
                     <button onClick={() => {
-                      setSuggestions(null)
+                      setSuggestions({
+                        experience: "",
+                        project: "",
+                        skills: "",
+                      })
                     }}>
                       <RxCross1 className='text-xl text-yellow-500' />
                     </button>
