@@ -1,1 +1,2 @@
-https://github.com/shayan-cyber/ResumeCraft/issues/1#issue-2421509867
+https://github.com/user-attachments/assets/d38b0027-fe74-492c-a445-9e868305846b
+
