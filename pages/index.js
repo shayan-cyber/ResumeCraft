@@ -8,6 +8,8 @@ import Features from "@/components/HomePage/Features";
 // const inter = Inter({ subsets: ["latin"] });
 import Footer from "@/components/HomePage/Footer";
 import MarqueeText from "@/components/HomePage/MarqueeText";
+import { SignInButton } from '@clerk/nextjs';
+import Link from "next/link";
 export default function Home() {
 
   function handleMouseMove(event) {
@@ -34,19 +36,24 @@ export default function Home() {
         <Navbar />
         <Hero />
         <div className="flex justify-center gap-4 items-center pb-4">
-          <button className='bg-black text-base lg:text-xl  hover:scale-95 transition-all duration-100 font-[550] border-2 text-white p-2 px-4 rounded-lg flex justify-center items-center gap-2'>
-            <p>Build Now</p>
-            <GoArrowRight className='text-xl' />
-          </button>
+          <Link href={"/select_template"}>
+            <button className='bg-black text-base lg:text-xl  hover:scale-95 transition-all duration-100 font-[550] border-2 text-white p-2 px-4 rounded-lg flex justify-center items-center gap-2'>
+              <p>Build Now</p>
+              <GoArrowRight className='text-xl' />
+            </button>
+          </Link>
           <button className='bg-white text-base lg:text-xl  hover:scale-95 transition-all duration-100 font-[550] text-black border-black border-2 p-2 px-4 rounded-lg flex justify-center items-center gap-2'>
-            <p>Sign Up</p>
+          
+              <SignInButton />
+       
+           
           </button>
 
         </div>
-        <MarqueeText/>
-        <ShowCase/>
-        <Features/>
-        <Footer/>
+        <MarqueeText />
+        <ShowCase />
+        <Features />
+        <Footer />
       </div>
 
     </>

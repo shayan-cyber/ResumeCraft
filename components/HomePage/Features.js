@@ -9,6 +9,7 @@ import { TbBrain } from "react-icons/tb";
 import { Splide, SplideSlide } from '@splidejs/react-splide';
 import '@splidejs/react-splide/css';
 import { AutoScroll } from '@splidejs/splide-extension-auto-scroll';
+import Link from "next/link";
 const features = [
   {
     title: '100+ Templates',
@@ -156,11 +157,12 @@ function Features() {
               <h1 className='text-xl lg:text-2xl font-bold'>{features[selected].title}</h1>
               <p className='text-base lg:text-lg mt-2'>{features[selected].description}</p>
             </div>
-
+            <Link href={"/select_template"}>
             <button className='bg-white text-black border-black border-2 p-2 px-4 rounded-lg flex justify-center items-center gap-2 mt-2 hover:scale-95 transition-all duration-300'>
               <p>Create Now</p>
               <GoArrowRight className='text-xl' />
             </button>
+            </Link>
 
           </div>
 
