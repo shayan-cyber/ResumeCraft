@@ -14,6 +14,8 @@ https://github.com/user-attachments/assets/d38b0027-fe74-492c-a445-9e868305846b
 
 ![App Screenshot](https://i.imgur.com/dTt4z6s.png)
 
+![App Screenshot](https://i.imgur.com/naFx426.png)
+
 
 
 ## Features
