@@ -47,7 +47,10 @@ export default async function (req, res) {
                         basic_details: true,
                         work_details: true,
                         education_details: true,
-                        project_details: true
+                        project_details: true,
+                        // skills_details: true,
+                        // other_details: true,
+                        // updated_at: true
                     }
                 })
 

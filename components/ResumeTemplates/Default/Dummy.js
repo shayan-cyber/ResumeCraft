@@ -4,21 +4,20 @@ import { FaGithub, FaLinkedinIn } from "react-icons/fa";
 import { IoIosCall } from "react-icons/io";
 import { FaExternalLinkAlt } from "react-icons/fa";
 import Link from 'next/link';
-function Dummy({data}) {
-    if(data)
-    {
+function Dummy({ data }) {
+    if (data) {
         data = {
             ...data,
-            basicDetails:data?.basic_details,
-            WorkDetails:data?.work_details,
-            educationDetails:data?.education_details,
-            projectDetails:data?.project_details,
-            skillsDetails:data?.skills_details
+            basicDetails: data?.basic_details,
+            WorkDetails: data?.work_details,
+            educationDetails: data?.education_details,
+            projectDetails: data?.project_details,
+            skillsDetails: data?.skills_details
         }
     }
-    let resumeData = data? data : sampleData
-    console.log("here", {resumeData});
-    
+    let resumeData = data ? data : sampleData
+    console.log("here", { resumeData });
+
     return (
 
         <div className={'w-full p-6 h-full shadow-md relative rounded-2xl'}>
@@ -45,7 +44,7 @@ function Dummy({data}) {
                     <div href={resumeData?.basicDetails?.linkedin_link || ""}><p className='text-blue-600'><FaLinkedinIn /></p></div>
                 </div>
                 <div className='flex justify-start items-center'>
-                    <div href={resumeData?.basicDetails?.github_link ||""}><p className='text-blue-600'><FaGithub /></p></div>
+                    <div href={resumeData?.basicDetails?.github_link || ""}><p className='text-blue-600'><FaGithub /></p></div>
                 </div>
             </div>
 

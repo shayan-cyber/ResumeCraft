@@ -26,22 +26,22 @@ function ShowCase() {
         card.style.transform = '';
       }     
     return (
-        <div className='px-20 mt-[200px]'>
+        <div className='px-3 lg:px-20 mt-[100px]'>
             <div className='flex justify-center'>
 
-                <div className='w-1/2 text-center'>
-
-                    <h1 className='text-7xl text-center font-[1000]'>Build your Resume,</h1>
-                    <h2 className=' text-7xl font-[100]'>your way.</h2>
+                <div className='w-full lg:w-1/2 text-center'>
+                     <h2 className=' text-2xl font-[100]'>Templates</h2>
+                    <h1 className='text-3xl lg:text-7xl text-center font-[1000]'>Build your Resume,</h1>
+                    <h2 className=' text-3xl lg:text-7xl font-[100]'>your way.</h2>
 
                 </div>
 
             </div>
 
-            <div className='flex justify-center py-20'>
+            <div className='flex justify-center py-12'>
 
                 <Link href={"/select_template"}>
-                <div className='w-[500px] h-[600px] rounded-2xl shadow-md bg-white card1 cursor-pointer hover:shadow-blue-200 hover:shadow-2xl' onMouseMove={(e) => handleMouseMove(e, "card1")} onMouseLeave={(e) => {
+                <div className='w-full h-auto lg:w-[500px] lg:h-[600px] rounded-2xl shadow-md bg-white card1 cursor-pointer hover:shadow-blue-200 hover:shadow-2xl' onMouseMove={(e) => handleMouseMove(e, "card1")} onMouseLeave={(e) => {
                     // handleMouseLeave(e, "card1")
                 }}>
                     <Dummy/>

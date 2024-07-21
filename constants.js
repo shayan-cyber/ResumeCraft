@@ -26,7 +26,7 @@ export const sampleData = {
             location: "Remote",
             start_date: "2001/02/05",
             end_date: "2001/02/05",
-            description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lobortis elementum nibh tellus molestie nunc non blandit massa. Diam quis enim lobortis scelerisque fermentum. Pretium nibh ipsum consequat nisl vel pretium lectus quam. Eu volutpat odio facilisis mauris sit amet massa vitae. Aliquet nec ullamcorper sit amet risus nullam eget felis"
+            description: "Lorem ipsum dolor sit amet,"
         },
         {
             title: "SDE",
@@ -34,7 +34,7 @@ export const sampleData = {
             location: "Remote",
             start_date: "2001/02/05",
             end_date: "2001/02/05",
-            description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lobortis elementum nibh tellus molestie nunc non blandit massa. Diam quis enim lobortis scelerisque fermentum. Pretium nibh ipsum consequat nisl vel pretium lectus quam. Eu volutpat odio facilisis mauris sit amet massa vitae. Aliquet nec ullamcorper sit amet risus nullam eget felis"
+            description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, "
         }
     ],
 
@@ -62,7 +62,7 @@ export const sampleData = {
     projectDetails: [
         {
             name:"Insta Clone",
-            description:"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lobortis elementum nibh tellus molestie nunc non blandit massa. Diam quis enim lobortis scelerisque fermentum. Pretium nibh ipsum consequat nisl vel pretium lectus quam. Eu volutpat odio facilisis mauris sit amet massa vitae. Aliquet nec ullamcorper sit amet risus nullam eget felis",
+            description:"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor ",
             tech_stack:"Mongo , NodeJS, ExpressJS, ReactJS",
             start_date: "2001/02/05",
             end_date: "2001/02/05",
@@ -71,7 +71,7 @@ export const sampleData = {
         },
         {
             name:"Insta Clone",
-            description:"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lobortis elementum nibh tellus molestie nunc non blandit massa. Diam quis enim lobortis ",
+            description:"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ",
             tech_stack:"Mongo , NodeJS, ExpressJS, ReactJS",
             start_date: "2001/02/05",
             end_date: "2001/02/05",
@@ -89,6 +89,11 @@ export const sampleData = {
         }
 
     ]
+}
+
+export const TABS_SELECT_TEMPLATE = {
+    YOUR_RESUMES: '1',
+    TEMPLATES: '2'
 }
 
 export const COLORS = [

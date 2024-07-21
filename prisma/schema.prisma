@@ -23,6 +23,8 @@ model ResumeData {
   skills_details    String[]
   project_details   ProjectDetails[]
   other_details     String[]
+  updated_at        DateTime           @default(now())
+
 }
 
 model BasicDetails {
