@@ -70,9 +70,4 @@ npm run dev
 ```
 
 
-
-
-
-##### Client URL: http://localhost:5173/
-
-##### Server URL: http://localhost:3000/
+#####  URL: http://localhost:3000/
