@@ -22,9 +22,9 @@ const Default = ({ basicDetails, WorkDetails, educationDetails, projectDetails, 
   if (!isMounted) {
     return null;
   }
- 
+  console.log({skillsDetails});
   return (
-
+    
     <div className={suggestions?.experience || suggestions?.project || suggestions?.skills ? `w-full p-6 shadow-md border-[2px] border-yellow-400 relative ${font}` : `w-full p-6 shadow-md border-2 relative bg-white ${font}`} >
       <div>
 
@@ -136,7 +136,7 @@ const Default = ({ basicDetails, WorkDetails, educationDetails, projectDetails, 
             return (
               <>
                 <li className='mr-2 '>
-                  <p className='text-sm font-semibold'> {item?.text}</p>
+                  <p className='text-sm font-semibold'> {item?.text? item?.text:item}</p>
                 </li>
               </>
             )

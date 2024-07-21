@@ -9,6 +9,8 @@ import { TEMPLATES } from '@/constants';
 
 
 function builder({ resumeData }) {
+
+  console.log({ resumeData });
   return (
     <div className='bg-warm-grey'>
       <BuilderPage resumeData={resumeData} />

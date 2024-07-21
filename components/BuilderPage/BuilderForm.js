@@ -17,15 +17,16 @@ import { MdOutlineFileDownload } from "react-icons/md";
 import { useReactToPrint } from 'react-to-print'
 import { toast } from 'sonner';
 import { FaPaintbrush } from "react-icons/fa6";
-import { RxFontFamily } from "react-icons/rx";
+import { RxCross1, RxFontFamily } from "react-icons/rx";
 import { FaEye } from "react-icons/fa";
 import { useAuth } from '@clerk/nextjs';
 import { RiLoader2Fill } from 'react-icons/ri';
 import { IoIosSave } from 'react-icons/io';
 import { debounce, isString } from 'lodash';
 import { removeID } from '@/utils/helpers';
+import { LuCross } from 'react-icons/lu';
 function BuilderForm({ tab, isLoading, setIsLoading, resumeData }) {
-  
+
   const componentRef = useRef();
   const handlePrint = useReactToPrint({
     content: () => componentRef.current,
@@ -74,7 +75,7 @@ function BuilderForm({ tab, isLoading, setIsLoading, resumeData }) {
     // <LatexEditor latexCode={latexCode} setLatexCode={setLatexCode} />
   }
 
-  
+  console.log({ skillsDetails });
 
   const buildResumeDescription = (resumeDescription) => {
     let description = `
@@ -147,13 +148,13 @@ function BuilderForm({ tab, isLoading, setIsLoading, resumeData }) {
     if (isSaving)
       return
     const token = await getToken();
-    if (!token){
+    if (!token) {
       return;
     }
     setIsSaving(true)
     console.log("save : ", { basicDetails });
     try {
-      let resume_data_body =  {
+      let resume_data_body = {
         resume_id: 1,
         basic_details: basicDetails,
         work_details: WorkDetails.length == 0 ? [] : WorkDetails,
@@ -162,7 +163,7 @@ function BuilderForm({ tab, isLoading, setIsLoading, resumeData }) {
         project_details: projectDetails.length == 0 ? [] : projectDetails,
         other_details: otherDetails
       }
-      let promise = axios.post(`${resumeData ? `/api/resumedata/post_resume_data?id=${resumeData? resumeData?.id:null}`:`/api/resumedata/post_resume_data`}`, {resumeData:removeID(resume_data_body)}, { headers: { "Authorization": `Bearer ${token}` }, });
+      let promise = axios.post(`${resumeData ? `/api/resumedata/post_resume_data?id=${resumeData ? resumeData?.id : null}` : `/api/resumedata/post_resume_data`}`, { resumeData: removeID(resume_data_body) }, { headers: { "Authorization": `Bearer ${token}` }, });
 
       toast.promise(promise, {
         loading: 'Saving...',
@@ -256,13 +257,7 @@ function BuilderForm({ tab, isLoading, setIsLoading, resumeData }) {
         <div className={preview ? `block md:block` : `hidden md:block`}>
 
           <div className='px-4 py-12 md:py-4 max-h-screen overflow-y-auto '>
-            {/* {atsScore && (
-            <div className='flex justify-center '>
 
-              <h1>{atsScore?.resume_score}</h1>
-
-            </div>
-          )} */}
             <div className='flex justify-between my-2 items-center relative'>
 
               <div className='flex  gap-2'>
@@ -272,13 +267,7 @@ function BuilderForm({ tab, isLoading, setIsLoading, resumeData }) {
                 </button>
                 <button className='add-btn flex gap-2 justify-center items-center disabled:opacity-40' disabled={isSaving} onClick={() => {
                   handleSave(basicDetails, WorkDetails, educationDetails, projectDetails, skillsDetails, otherDetails)
-                  // toast.promise(promise, {
-                  //   loading: 'Saving...',
-                  //   success: (data) => {
-                  //     return `Saved `;
-                  //   },
-                  //   error: 'Error',
-                  // });
+
                 }}>
                   Save
                   {
@@ -356,10 +345,23 @@ function BuilderForm({ tab, isLoading, setIsLoading, resumeData }) {
 
             </div>
 
-            <div className='flex justify-center '>
+            <div className='flex justify-center relative'>
+              {
+                suggestions&& (
+                  <div className='absolute top-2 right-2 z-10 p-1 rounded-lg'>
+                    <button onClick={() => {
+                      setSuggestions(null)
+                    }}>
+                      <RxCross1 className='text-xl text-yellow-500' />
+                    </button>
+
+                  </div>
+                )
+              }
               {
                 latexCode !== null ? <LatexResumeShowCase latexCode={latexCode} /> : (
                   <div className='w-full' ref={componentRef}>
+
                     <ResumeShowCase template_name={"default"} basicDetails={basicDetails} WorkDetails={WorkDetails} educationDetails={educationDetails} projectDetails={projectDetails} skillsDetails={skillsDetails} otherDetails={otherDetails} suggestions={suggestions} font={font} color={color} />
                   </div>
                 )

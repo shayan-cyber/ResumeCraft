@@ -3,7 +3,7 @@ import { RiBrainLine } from "react-icons/ri";
 import { RxCross2 } from "react-icons/rx";
 function SuggestionCard({closeCard, suggestion}) {
   return (
-    <div className='bg-white rounded-lg p-4 z-10  shadow-lg shadow-gray-300 max-h-[300px] overflow-y-auto'>
+    <div className='bg-white rounded-lg p-4 z-[15] relative  shadow-lg shadow-gray-300 max-h-[300px] overflow-y-auto'>
           <div className='flex justify-between items-center'>
             <div className='flex justify-start items-center gap-1 mb-2'>
 
